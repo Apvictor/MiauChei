@@ -237,9 +237,23 @@ return [
             'icon' => 'fas fa-users',
         ],
         [
-            'text' => 'Pets',
-            'url'  => 'pets',
-            'icon' => 'fas fa-paw',
+            'text'    => 'Pets',
+            'icon'    => 'fas fa-paw',
+            'submenu' => [
+                [
+                    'text' => 'Perdidos',
+                    'url'  => '#',
+                ],
+                [
+                    'text' => 'Encontrados',
+                    'url'  => '#',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Status',
+            'url'  => 'status',
+            'icon' => 'fas fa-tags',
         ],
     ],
 

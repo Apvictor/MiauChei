@@ -9,7 +9,14 @@ class Status extends Model
 {
     use HasFactory;
 
+    protected $table = 'status';
+
     protected $fillable = [
         'name',
     ];
+
+    public function pets()
+    {
+        return $this->hasOne(Pets::class);
+    }
 }

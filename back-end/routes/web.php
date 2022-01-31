@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PetsController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +39,16 @@ Route::middleware('auth')
         Route::get('users/{id}', [UserController::class, 'show'])->name('users.show');
         Route::delete('users/{id}/delete', [UserController::class, 'destroy'])->name('users.destroy');
         Route::post('users/search', [UserController::class, 'search'])->name('users.search');
+
+        // Status
+        Route::get('status', [StatusController::class, 'index'])->name('status.index');
+        Route::get('status/create', [StatusController::class, 'create'])->name('status.create');
+        Route::post('status/store', [StatusController::class, 'store'])->name('status.store');
+        Route::get('status/{id}/edit', [StatusController::class, 'edit'])->name('status.edit');
+        Route::put('status/{id}/update', [StatusController::class, 'update'])->name('status.update');
+        Route::get('status/{id}', [StatusController::class, 'show'])->name('status.show');
+        Route::delete('status/{id}/delete', [StatusController::class, 'destroy'])->name('status.destroy');
+        Route::post('status/search', [StatusController::class, 'search'])->name('status.search');
 
         Route::get('pets', [PetsController::class, 'index'])->name('pets.index');
     });

@@ -28,11 +28,11 @@ class CreatePetsTable extends Migration
             $table->text('uuid');
             $table->timestamps();
 
-            $table->unsignedBigInteger('fk_user');
-            $table->unsignedBigInteger('fk_status');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('status_id');
 
-            $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('fk_status')->references('id')->on('status');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('status_id')->references('id')->on('status');
         });
     }
 

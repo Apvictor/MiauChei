@@ -14,9 +14,4 @@ class Status extends Model
     protected $fillable = [
         'name',
     ];
-
-    public function pets()
-    {
-        return $this->hasOne(Pets::class);
-    }
 }

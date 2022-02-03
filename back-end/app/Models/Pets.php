@@ -21,7 +21,17 @@ class Pets extends Model
         'date_disappearance',
         'photo',
         'uuid',
-        'fk_user',
-        'fk_status',
+        'user_id',
+        'status_id',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function sighted()
+    {
+        return $this->hasMany(Sighted::class, 'pet_id');
+    }
 }

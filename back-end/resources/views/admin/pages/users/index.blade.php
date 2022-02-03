@@ -8,8 +8,13 @@
         <li class="breadcrumb-item active"><a class="breadcrumb-item active" href="{{ route('users.index') }}"
                 class="active">Usuários</a></li>
     </ol>
+    <div style="display: flex; justify-content: space-between">
+        <h1>Usuários</h1>
+        <a href="{{ route('users.create') }}" class="btn btn-dark">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+        </a>
+    </div>
 
-    <h1>Usuários <a href="{{ route('users.create') }}" class="btn btn-dark">ADD</a></h1>
 @stop
 
 @section('content')
@@ -17,9 +22,11 @@
         <div class="card-header">
             <form action="{{ route('users.search') }}" method="POST" class="form form-inline">
                 @csrf
-                <input type="text" name="filter" placeholder="Filtrar:" class="form-control"
+                <input type="text" name="filter" placeholder="Pesquisar" class="form-control"
                     value="{{ $filters['filter'] ?? '' }}">
-                <button type="submit" class="btn btn-dark">Filtrar</button>
+                <button type="submit" class="btn btn-dark">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </button>
             </form>
         </div>
         <div class="card-body">
@@ -41,8 +48,12 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
                             <td style="width=10px;">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">Edit</a>
-                                <a href="{{ route('users.show', $user->id) }}" class="btn btn-warning">VER</a>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+                                <a href="{{ route('users.show', $user->id) }}" class="btn btn-warning">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
                     @endforeach

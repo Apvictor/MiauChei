@@ -11,6 +11,7 @@
 
 <div class="form-group">
     <label>Foto:</label>
+    <img src="{{ $user->photo ?? '' }}" width="30" height="30">
     <input type="file" name="photo" class="form-control" placeholder="Foto:"
         value="{{ $user->photo ?? old('photo') }}">
 </div>

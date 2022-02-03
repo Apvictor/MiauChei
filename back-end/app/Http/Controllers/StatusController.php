@@ -9,7 +9,7 @@ class StatusController extends Controller
 {
     public function index()
     {
-        $status = Status::paginate();
+        $status = Status::paginate(3);
 
         return view('admin.pages.status.index', ['status' => $status]);
     }

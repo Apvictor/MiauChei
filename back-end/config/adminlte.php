@@ -242,11 +242,11 @@ return [
             'submenu' => [
                 [
                     'text' => 'Perdidos',
-                    'url'  => '#',
+                    'url'  => 'pets/lost',
                 ],
                 [
                     'text' => 'Encontrados',
-                    'url'  => '#',
+                    'url'  => 'pets/found',
                 ],
             ],
         ],

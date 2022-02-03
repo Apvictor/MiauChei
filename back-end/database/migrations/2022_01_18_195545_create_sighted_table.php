@@ -19,11 +19,11 @@ class CreateSightedTable extends Migration
             $table->timestamp('data_sighted');
             $table->timestamps();
 
-            $table->unsignedBigInteger('fk_user');
-            $table->unsignedBigInteger('fk_pet');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('pet_id');
 
-            $table->foreign('fk_user')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('fk_pet')->references('id')->on('pets')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('pet_id')->references('id')->on('pets')->onDelete('cascade');
         });
     }
 

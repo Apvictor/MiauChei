@@ -43,6 +43,7 @@
     <input class="form-control" list="list-breed" name="breed" id="breed" value="{{ $pet->breed ?? old('breed') }}"
         placeholder="Escreva para pesquisar...">
     <datalist id="list-breed">
+        <option value="Vira Lata">
         <option value="Akita">
         <option value="Basset hound">
         <option value="Beagle">
@@ -90,7 +91,6 @@
         <option value="Staffordshire bull terrier">
         <option value="Weimaraner">
         <option value="Yorkshire">
-        <option value="Vira Lata">
     </datalist>
 </div>
 
@@ -141,7 +141,8 @@
 
 <div class="form-group">
     <label>Última vez visto:</label>
-    <input type="text" name="last_seen" class="form-control" placeholder="Rua:">
+    <input type="text" name="last_seen" class="form-control" placeholder="Rua:"
+        value="{{ $pet->last_seen ?? old('last_seen') }}">
 </div>
 
 <div class="form-group">

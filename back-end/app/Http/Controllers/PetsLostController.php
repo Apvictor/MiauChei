@@ -7,6 +7,7 @@ use App\Models\Pets;
 use App\Models\Sighted;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laravel\SerializableClosure\Serializers\Signed;
 
@@ -26,6 +27,23 @@ class PetsLostController extends Controller
 
     public function lostStore(Request $request)
     {
+        $validator  = Validator::make($request->all(), [
+            'name' => ['required'],
+            'sex' => ['required'],
+            'photo' => ['required', 'mimes:jpg,png,jpeg'],
+            'species' => ['required'],
+            'breed' => ['required'],
+            'size' => ['required'],
+            'predominant_color' => ['required'],
+            'secondary_color' => ['required'],
+            'date_disappearance' => ['required'],
+            'last_seen' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $dados = $request->all();
 
         $dados['uuid'] = Str::uuid();
@@ -43,7 +61,7 @@ class PetsLostController extends Controller
                 $url = Storage::disk('s3')->url($name);
                 $dados['photo'] = $url;
             } else {
-                return response()->json(['message' => 'Formato inválido!'], 400);
+                return back()->with('toast_error', 'Formato de foto inválido')->withInput();
             }
         }
 
@@ -71,7 +89,7 @@ class PetsLostController extends Controller
 
         $pet->sighted()->save($sighted);
 
-        return redirect()->route('pets.lost.index');
+        return redirect()->route('pets.lost.index')->with('toast_success', 'Cadastrado com sucesso!');
     }
 
     public function lostSearch(Request $request)
@@ -93,6 +111,6 @@ class PetsLostController extends Controller
 
         $pet->update(['status_id' => 2]);
 
-        return redirect()->route('pets.lost.index');
+        return redirect()->route('pets.lost.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 }

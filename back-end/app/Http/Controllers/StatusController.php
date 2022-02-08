@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Status;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StatusController extends Controller
 {
     public function index()
     {
-        $status = Status::paginate(3);
+        $status = Status::paginate(10);
 
         return view('admin.pages.status.index', ['status' => $status]);
     }
@@ -35,22 +36,38 @@ class StatusController extends Controller
 
     public function store(Request $request)
     {
+        $validator  = Validator::make($request->all(), [
+            'name' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $dados = $request->all();
 
         Status::create($dados);
 
-        return redirect()->route('status.index');
+        return redirect()->route('status.index')->with('toast_success', 'Cadastrado com sucesso!');
     }
 
     public function update(Request $request, $id)
     {
+        $validator  = Validator::make($request->all(), [
+            'name' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $dados = $request->all();
 
         $status = Status::findOrFail($id);
 
         $status->update($dados);
 
-        return redirect()->route('status.index');
+        return redirect()->route('status.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 
     public function destroy($id)
@@ -59,7 +76,7 @@ class StatusController extends Controller
 
         $status->delete();
 
-        return redirect()->route('status.index');
+        return redirect()->route('status.index')->with('toast_success', 'Deletado com sucesso!');
     }
 
     public function search(Request $request)

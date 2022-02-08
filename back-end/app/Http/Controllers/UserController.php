@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -37,6 +38,18 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $validator  = Validator::make($request->all(), [
+            'name' => ['required'],
+            'phone' => ['required', 'unique:users'],
+            'photo' => ['required', 'mimes:jpg,png,jpeg'],
+            'email' => ['required', 'email', 'unique:users'],
+            'password' => ['required', 'min:8', 'max:8'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $dados = $request->all();
 
         $dados['password'] = bcrypt($request->password);
@@ -55,17 +68,28 @@ class UserController extends Controller
                 $url = Storage::disk('s3')->url($name);
                 $dados['photo'] = $url;
             } else {
-                return response()->json(['message' => 'Formato inválido!'], 400);
+                return back()->with('toast_error', 'Formato de foto inválido')->withInput();
             }
         }
 
         User::create($dados);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('toast_success', 'Cadastrado com sucesso!');
     }
 
     public function update(Request $request, $id)
     {
+        $validator  = Validator::make($request->all(), [
+            'name' => ['required'],
+            'phone' => ['required'],
+            'email' => ['required', 'email'],
+            'password' => ['required', 'min:8', 'max:8'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+        }
+
         $dados = $request->all();
 
         $user = User::findOrFail($id);
@@ -85,13 +109,13 @@ class UserController extends Controller
                 $url = Storage::disk('s3')->url($name);
                 $dados['photo'] = $url;
             } else {
-                return response()->json(['message' => 'Formato inválido!'], 400);
+                return back()->with('toast_error', 'Formato de foto inválido')->withInput();
             }
         }
 
         $user->update($dados);
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 
     public function destroy($id)
@@ -102,11 +126,13 @@ class UserController extends Controller
 
         if (Storage::disk('s3')->exists(isset($file_cortado[1]) ? $file_cortado[1] : null)) {
             Storage::disk('s3')->delete($file_cortado[1]);
+        } else {
+            return back()->with('toast_error', 'Erro ao excluir foto')->withInput();
         }
 
         $user->delete();
 
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->with('toast_success', 'Deletado com sucesso!');
     }
 
     public function search(Request $request)

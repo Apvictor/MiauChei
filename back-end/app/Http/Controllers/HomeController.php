@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Pets;
+use App\Models\Status;
+use App\Models\User;
 
 class HomeController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function index()
     {
-        return view('admin.pages.home.index');
+        $counts = [];
+        $counts['users'] = User::all()->count();
+        $counts['pets'] = Pets::all()->count();
+        $counts['pets_lost'] = Pets::all()->where('status_id', 1)->count();
+        $counts['pets_found'] = Pets::all()->where('status_id', 2)->count();
+        $counts['status'] = Status::all()->count();
+
+        return view('admin.pages.home.index', compact('counts'));
     }
 }

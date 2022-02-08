@@ -56,7 +56,7 @@
                             <td>{{ $item->size }}</td>
                             <td>{{ $item->predominant_color }}</td>
                             <td>{{ $item->secondary_color }}</td>
-                            <td>{{ $item->date_disappearance }}</td>
+                            <td>{{ date('d/m/Y', strtotime($item->date_disappearance)) }}</td>
                             <td style="width=10px;">
                                 <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info">
                                     <i class="fas fa-pen"></i>
@@ -64,9 +64,12 @@
                                 <a href="{{ route('pets.show', $item->id) }}" class="btn btn-warning">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
-                                <a href="{{ route('pets.lost.found', $item->id) }}" class="btn btn-primary">
+
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#avistado{{ $item->id }}">
                                     <i class="fas fa-chart-line"></i>
-                                </a>
+                                </button>
+
                                 <a href="{{ route('pets.lost.found', $item->id) }}" class="btn btn-success">
                                     <i class="fas fa-search-location"></i>
                                 </a>
@@ -80,4 +83,38 @@
             {!! $pets->links() !!}
         </div>
     </div>
+
+    {{-- MODAL --}}
+    @foreach ($pets as $item)
+        <div class="modal fade" id="avistado{{ $item->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Pet avistado</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="{{ route('sighted.store') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="pet_id" class="form-control" value="{{ $item->id }}">
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="last_seen" class="form-label">Última vez visto:</label>
+                                <input type="text" name="last_seen" class="form-control" id="last_seen" placeholder="Rua">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="last_seen" class="form-label">Avistado:</label>
+                                <input type="date" name="data_sighted" class="form-control" id="last_seen"
+                                    placeholder="Rua">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @stop

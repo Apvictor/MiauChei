@@ -17,7 +17,7 @@ class PetsController extends Controller
 
     public function edit($id)
     {
-        $pet = Pets::findOrFail($id);
+        $pet = Pets::join('sighted', 'sighted.pet_id', '=', 'pets.id')->select('pets.*', 'sighted.last_seen')->findOrFail($id);
 
         return view('admin.pages.pets.edit', compact('pet'));
     }
@@ -41,13 +41,13 @@ class PetsController extends Controller
                 $url = Storage::disk('s3')->url($name);
                 $dados['photo'] = $url;
             } else {
-                return response()->json(['message' => 'Formato inválido!'], 400);
+                return back()->with('toast_error', 'Formato de foto inválido')->withInput();
             }
         }
 
         $pet->update($dados);
 
-        return redirect()->route('pets.lost.index');
+        return redirect()->route('pets.lost.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 
     public function destroy($id)
@@ -58,10 +58,12 @@ class PetsController extends Controller
 
         if (Storage::disk('s3')->exists(isset($file_cortado[1]) ? $file_cortado[1] : null)) {
             Storage::disk('s3')->delete($file_cortado[1]);
+        } else {
+            return back()->with('toast_error', 'Erro ao excluir foto')->withInput();
         }
 
         $pet->delete();
 
-        return redirect()->route('pets.lost.index');
+        return redirect()->route('pets.lost.index')->with('toast_success', 'Deletado com sucesso!');
     }
 }

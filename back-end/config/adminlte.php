@@ -251,6 +251,11 @@ return [
             ],
         ],
         [
+            'text' => 'Avistados',
+            'url'  => 'sighted',
+            'icon' => 'fas fa-chart-line',
+        ],
+        [
             'text' => 'Status',
             'url'  => 'status',
             'icon' => 'fas fa-tags',

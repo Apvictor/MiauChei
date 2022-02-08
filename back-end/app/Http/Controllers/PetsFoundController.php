@@ -33,6 +33,6 @@ class PetsFoundController extends Controller
 
         $pet->update(['status_id' => 1]);
 
-        return redirect()->route('pets.found.index');
+        return redirect()->route('pets.found.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 }

@@ -53,7 +53,7 @@
                             <td>{{ $item->size }}</td>
                             <td>{{ $item->predominant_color }}</td>
                             <td>{{ $item->secondary_color }}</td>
-                            <td>{{ $item->date_disappearance }}</td>
+                            <td>{{ date('d/m/Y', strtotime($item->date_disappearance)) }}</td>
                             <td style="width=10px;">
                                 <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info">
                                     <i class="fas fa-pen"></i>

@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PetsController;
 use App\Http\Controllers\PetsFoundController;
 use App\Http\Controllers\PetsLostController;
+use App\Http\Controllers\SightedController;
 use App\Http\Controllers\StatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -69,4 +70,9 @@ Route::middleware('auth')
         Route::get('pets/{id}', [PetsController::class, 'show'])->name('pets.show');
         Route::put('pets/{id}/update', [PetsController::class, 'update'])->name('pets.update');
         Route::delete('pets/{id}/delete', [PetsController::class, 'destroy'])->name('pets.destroy');
+
+        // Avistado
+        Route::get('sighted', [SightedController::class, 'index'])->name('sighted.index');
+        Route::post('sighted', [SightedController::class, 'store'])->name('sighted.store');
+        Route::post('sighted/sightings/{id}', [SightedController::class, 'show'])->name('sighted.show');
     });

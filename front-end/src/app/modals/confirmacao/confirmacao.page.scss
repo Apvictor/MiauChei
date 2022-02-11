@@ -1,0 +1,33 @@
+.fundo {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .modal {
+    height: auto;
+    width: 100%;
+    background-color: white;
+    margin: 0 50px;
+    border-radius: 5px;
+
+    .btn {
+      width: 100%;
+      text-align: end;
+    }
+
+    .img {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .titulo {
+      text-align: center;
+      color: black;
+    }
+
+
+  }
+}

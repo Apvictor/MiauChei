@@ -26,6 +26,11 @@ class LoginController extends Controller
             ]);
         }
 
-        return $user->createToken($request->device_name)->plainTextToken;
+        $response = [
+            'user' => $user,
+            'authorization' => $user->createToken($request->device_name)->plainTextToken
+        ];
+
+        return $response;
     }
 }

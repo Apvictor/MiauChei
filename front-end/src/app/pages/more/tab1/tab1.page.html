@@ -1,16 +1,110 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button>
+        <ion-img src="../../assets/logo.png"></ion-img>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
-      Tab 1
+      Olá, {{nameUser}}
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="start" name=""></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
+<div class="container">
+  <div class="text-info">
+    <p>Encontre outros pets cadastrados a mais tempo no App.</p>
+  </div>
+
+  <div class="btns-pets">
+    <div class="pet">
+      <div class="pet-img-lost">
+        <ion-img src="../../assets/lost.png"></ion-img>
+      </div>
+      <div class="pet-text">
+        <p>Perdidos</p>
+      </div>
+    </div>
+    <div class="pet">
+      <div class="pet-img-sighted">
+        <ion-img src="../../assets/sighted.png"></ion-img>
+      </div>
+      <div class="pet-text">
+        <p>Avistados</p>
+      </div>
+    </div>
+  </div>
+  <div class="title-info">
+    <p>Registros recentes</p>
+  </div>
+</div>
+
+<ion-content>
+  <div class="container">
+    <div>
+
+      <ion-list>
+        <ion-row>
+          <ion-col sizeLg="2" sizeMd="4" sizeXs="6">
+            <div class="card">
+              <div class="card-img">
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-68BCIaW0Iiam8wgn9vWs3vcGMHtg1yMTBg&usqp=CAU">
+                <div class="card-status">
+                  <p>DESAPARECIDO</p>
+                </div>
+              </div>
+              <div class="card-dados">
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/dog-sit.png" />
+                  <p class="nome">Thor</p>
+                </div>
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/male.png" />
+                  <p>Macho, médio</p>
+                </div>
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png" />
+                  <p>Rua Carlos Mad, há 1 mês</p>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+
+          <ion-col sizeLg="2" sizeMd="4" sizeXs="6">
+            <div class="card">
+              <div class="card-img">
+                <img
+                  src="https://www.thesprucepets.com/thmb/QDw4vt7XXQejL2IRztKeRLow6hA=/2776x1561/smart/filters:no_upscale()/cat-talk-eyes-553942-hero-df606397b6ff47b19f3ab98589c3e2ce.jpg">
+                <div class="card-status">
+                  <p>DESAPARECIDO</p>
+                </div>
+              </div>
+              <div class="card-dados">
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/pet-commands-train.png" />
+                  <p class="nome">Ninho</p>
+                </div>
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/female.png" />
+                  <p>Fêmea, pequeno</p>
+                </div>
+                <div class="dado">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png" />
+                  <p>Rua maria, há 3 semanas</p>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+
+        </ion-row>
+      </ion-list>
+    </div>
+  </div>
 </ion-content>

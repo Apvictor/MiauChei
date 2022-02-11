@@ -1,1 +1,16 @@
+ion-tabs {
+  background: #FFFFFF;
 
+  ion-tab-bar {
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px 10px 0px 0px;
+
+    ion-tab-button {
+      --color-selected: #0292C9;
+
+      ion-label {
+        font-weight: bold;
+      }
+    }
+  }
+}

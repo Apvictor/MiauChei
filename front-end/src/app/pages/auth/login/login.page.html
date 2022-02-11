@@ -1,0 +1,55 @@
+<ion-content>
+  <div class="logo">
+    <img src="../../../../assets/logo.png">
+  </div>
+
+  <div class="title">
+    <h1>MIAUCHEI</h1>
+  </div>
+
+  <div class="container">
+    <form [formGroup]="login_form">
+
+      <div class="campos">
+        <p>E-Mail</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="email" placeholder="E-Mail"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.email.invalid && f.email.touched">
+          <p>Email fora do padrão, verifique por favor.</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Senha</p>
+        <ion-item class="inputs">
+          <ion-input formControlName="password" type="password" placeholder="Senha"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.password.invalid && f.password.touched">
+          <p>O campo senha é obrigatório!</p>
+        </div>
+      </div>
+      <div class="forgot">
+        <p>Esqueci minha senha</p>
+      </div>
+
+      <!-- <div class="btn">
+        <ion-button expand="block" (click)="logar()" [disabled]="!login_form.valid">
+          Entrar
+        </ion-button>
+      </div> -->
+      <div class="btn">
+        <ion-button expand="block" (click)="doLogin()">
+          Entrar
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Não possue conta? <span>Criar conta</span></ion-title>
+  </ion-toolbar>
+</ion-footer>

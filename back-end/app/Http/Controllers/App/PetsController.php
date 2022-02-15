@@ -71,11 +71,23 @@ class PetsController extends Controller
         $user = Auth::user();
 
         $myPets = Pets::join('users', 'pets.user_id', '=', 'users.id')
-            ->select('pets.*')
+            ->join('status', 'pets.status_id', '=', 'status.id')
+            ->select('pets.*', 'status.name as status')
             ->where('users.id', $user->id)
-            ->orderBy('pets.created_at', 'DESC')
+            ->orderBy('pets.date_disappearance', 'DESC')
             ->get();
 
-        return response()->json($myPets);
+
+        $result = [];
+        for ($i = 0; $i < count($myPets); $i++) {
+            $result[$i]['id'] = $myPets[$i]['id'];
+            $result[$i]['name'] = $myPets[$i]['name'];
+            $dateFormat = date_create($myPets[$i]['date_disappearance']);
+            $result[$i]['date_disappearance'] = date_format($dateFormat, 'd/m/Y');
+            $result[$i]['photo'] = $myPets[$i]['photo'];
+            $result[$i]['status'] = $myPets[$i]['status'];
+        }
+
+        return response()->json($result);
     }
 }

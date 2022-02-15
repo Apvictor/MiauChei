@@ -21,7 +21,7 @@ export class Tab1Page {
   ngOnInit() {
     this.getNameUser();
 
-    this.recentPets();
+    this.recentsPets();
   }
 
   async getNameUser() {
@@ -29,10 +29,10 @@ export class Tab1Page {
     this.nameUser = name.value;
   }
 
-  async recentPets() {
+  async recentsPets() {
     this.loading.presentLoading();
     try {
-      this.pets.recent().then((pets) => {
+      this.pets.recents().then((pets) => {
         this.loading.dismissLoading();
         this.animais = pets;
       })
@@ -43,6 +43,3 @@ export class Tab1Page {
     }
   }
 }
-
-
-

@@ -1,16 +1,43 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-icon></ion-icon>
+    </ion-buttons>
+    <ion-title>Meus Pets</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="container">
 
+    <div class="pets">
+      <div class="pet" *ngFor="let item of items">
+        <div class="pet-img">
+          <img src="{{item.photo}}">
+        </div>
+        <div class="pet-text">
+          <div class="pet-date">
+            <p>{{item.status}} - {{item.date_disappearance}}</p>
+          </div>
+          <div class="pet-name">
+            <p>{{item.name}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
+      </ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+  </div>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="secondary">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>

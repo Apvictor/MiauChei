@@ -1,3 +1,4 @@
+import { NavController } from '@ionic/angular';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { BehaviorSubject } from 'rxjs';
@@ -18,6 +19,7 @@ export class AuthService {
 
   constructor(
     private api: ApiService,
+    private nav: NavController,
   ) { }
 
   login(data) {
@@ -29,7 +31,17 @@ export class AuthService {
         Storage.set({ key: USER_ID, value: res.user.id })
         this.currentAccessToken = res.authorization;
         this.isAuthenticated.next(true)
-        console.log(res);
+        this.nav.navigateForward('');
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  cadastro(data) {
+    return new Promise((resolve, reject) => {
+      this.api.post('/register', data).subscribe((res: any) => {
         resolve(res)
       }, err => {
         reject(err)

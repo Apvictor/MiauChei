@@ -4,7 +4,7 @@ import { AuthService } from './../../../services/auth.service';
 import { ConfirmacaoPage } from './../../../modals/confirmacao/confirmacao.page';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController, LoadingController, NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +21,6 @@ export class LoginPage implements OnInit {
     private modal: ModalController,
     private auth: AuthService,
     private loading: LoadingService,
-    private nav: NavController,
-
   ) { }
 
   ngOnInit() {
@@ -34,17 +32,14 @@ export class LoginPage implements OnInit {
 
   get f() { return this.login_form.controls }
 
-  async doLogin() {
+  doLogin() {
     this.loading.presentLoading();
-    this.user.setUsuarioData(this.login_form.value)
-    let usuario = await this.user.getUsuarioData()
-    console.log(usuario);
+    this.user.setEmail(this.login_form.value['email'])
+    this.user.setPassword(this.login_form.value['password'])
+    this.user.setDevice_name('Android')
 
     try {
-      this.auth.login(usuario).then(() => {
-        this.loading.dismissLoading();
-        this.nav.navigateForward('');
-      })
+      this.auth.login(this.user)
         .catch(err => {
         })
     } catch (err) {

@@ -33,13 +33,8 @@
         <p>Esqueci minha senha</p>
       </div>
 
-      <!-- <div class="btn">
-        <ion-button expand="block" (click)="logar()" [disabled]="!login_form.valid">
-          Entrar
-        </ion-button>
-      </div> -->
       <div class="btn">
-        <ion-button expand="block" (click)="doLogin()">
+        <ion-button expand="block" (click)="doLogin()" [disabled]="!login_form.valid">
           Entrar
         </ion-button>
       </div>
@@ -50,6 +45,6 @@
 
 <ion-footer>
   <ion-toolbar>
-    <ion-title>Não possue conta? <span>Criar conta</span></ion-title>
+    <ion-title routerLink="/cadastro">Não possue conta? <span>Criar conta</span></ion-title>
   </ion-toolbar>
 </ion-footer>

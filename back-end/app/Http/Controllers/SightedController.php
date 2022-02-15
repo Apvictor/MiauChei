@@ -42,6 +42,11 @@ class SightedController extends Controller
         $dados['user_id'] = Auth::user()->id;
         $dados['pet_id'] = intval($request->pet_id);
 
+        $pets = Pets::findOrFail($dados['pet_id']);
+        $pets->status_id = 3;
+        $pets->created_at = date('Y-m-d H:i:s');
+        $pets->save();
+
         Sighted::create($dados);
 
         return redirect()->route('pets.lost.index');

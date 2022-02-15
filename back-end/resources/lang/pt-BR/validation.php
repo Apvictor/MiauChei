@@ -151,6 +151,7 @@ return [
     */
 
     'attributes' => [
+        'photo'   => 'foto',
         'address'   => 'endereço',
         'age'       => 'idade',
         'body'      => 'conteúdo',
@@ -160,7 +161,7 @@ return [
         'date'      => 'data',
         'day'       => 'dia',
         'excerpt'   => 'resumo',
-        'first_name'=> 'primeiro nome',
+        'first_name' => 'primeiro nome',
         'gender'    => 'gênero',
         'hour'      => 'hora',
         'last_name' => 'sobrenome',

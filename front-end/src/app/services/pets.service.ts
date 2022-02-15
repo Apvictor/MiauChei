@@ -12,7 +12,7 @@ export class PetsService {
 
   recent() {
     return new Promise((resolve, reject) => {
-      this.api.get('/recent').subscribe((res: any) => {
+      this.api.get('/recents').subscribe((res: any) => {
         console.log(res);
         resolve(res)
       }, err => {

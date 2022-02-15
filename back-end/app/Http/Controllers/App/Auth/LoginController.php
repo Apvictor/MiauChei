@@ -27,6 +27,8 @@ class LoginController extends Controller
         }
 
         $response = [
+            'status' => true,
+            'message' => 'Login efetuado com sucesso!',
             'user' => $user,
             'authorization' => $user->createToken($request->device_name)->plainTextToken
         ];

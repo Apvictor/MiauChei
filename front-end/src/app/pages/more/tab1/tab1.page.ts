@@ -11,6 +11,7 @@ const USER_NAME = 'user-name';
 })
 export class Tab1Page {
   nameUser
+  animais
 
   constructor(
     private pets: PetsService,
@@ -33,9 +34,7 @@ export class Tab1Page {
     try {
       this.pets.recent().then((pets) => {
         this.loading.dismissLoading();
-
-        console.log(pets);
-
+        this.animais = pets;
       })
         .catch(err => {
         })

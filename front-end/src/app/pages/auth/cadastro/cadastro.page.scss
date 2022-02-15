@@ -1,0 +1,86 @@
+// HEADER
+.header-md::after {
+  position: fixed;
+}
+
+ion-header {
+  background: white;
+
+  ion-toolbar {
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+
+    ion-title {
+      font-weight: bold;
+      font-size: medium;
+    }
+
+    ion-img {
+      width: 40px;
+      height: 43.14px;
+    }
+
+    ion-buttons {
+      margin: 0 15px;
+    }
+
+  }
+}
+
+.container {
+  margin: 30px 10px;
+
+  .text-info {
+    margin: 50px 0;
+    background: #F0F0F0;
+    border-radius: 10px;
+
+    p {
+      padding: 10px;
+      font-weight: bold;
+      color: #999999;
+      font-size: 12px;
+    }
+  }
+
+  .campos {
+    margin-top: 20px;
+
+    p {
+      margin: 5px 0;
+    }
+
+    .inputs {
+      border: 2px solid #D9D9D9;
+      border-radius: 10px;
+    }
+
+    .msgError {
+      width: 100%;
+      background-color: rgba(255, 129, 97, 0.397);
+      border-radius: 5px;
+      margin: 5px 0;
+      text-align: center;
+
+      p {
+        margin: 5px;
+        font-size: small;
+      }
+    }
+  }
+
+  .btn {
+    margin: 10px 2%;
+    position: absolute;
+    bottom: 0;
+    width: 90%;
+
+    ion-button {
+      height: 50px;
+      font-size: 20px;
+      --background: #0292C9;
+      text-transform: none;
+    }
+  }
+}

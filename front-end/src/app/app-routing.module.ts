@@ -13,6 +13,14 @@ const routes: Routes = [
   {
     path: 'confirmacao',
     loadChildren: () => import('./modals/confirmacao/confirmacao.module').then( m => m.ConfirmacaoPageModule)
+  },
+  {
+    path: 'cadastro',
+    loadChildren: () => import('./pages/auth/cadastro/cadastro.module').then( m => m.CadastroPageModule)
+  },
+  {
+    path: 'cadastro-foto',
+    loadChildren: () => import('./pages/auth/cadastro-foto/cadastro-foto.module').then( m => m.CadastroFotoPageModule)
   }
 ];
 @NgModule({

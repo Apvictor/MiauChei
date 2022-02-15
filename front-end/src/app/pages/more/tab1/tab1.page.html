@@ -1,17 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button>
-        <ion-img src="../../assets/logo.png"></ion-img>
-      </ion-button>
+      <ion-img src="../../assets/logo.png"></ion-img>
     </ion-buttons>
     <ion-title>
       Olá, {{nameUser}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon slot="start" name=""></ion-icon>
-      </ion-button>
+      <ion-icon slot="start"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -51,53 +47,47 @@
 
       <ion-list>
         <ion-row>
-          <ion-col sizeLg="2" sizeMd="4" sizeXs="6">
+          <ion-col sizeLg="2" sizeMd="4" sizeXs="6" *ngFor="let item of animais">
             <div class="card">
               <div class="card-img">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-68BCIaW0Iiam8wgn9vWs3vcGMHtg1yMTBg&usqp=CAU">
-                <div class="card-status">
+                <img src="{{item.photo}}">
+                <div class="card-status-lost" *ngIf="item.status_id == 1">
                   <p>DESAPARECIDO</p>
+                </div>
+                <div class="card-status-sighted" *ngIf="item.status_id == 3">
+                  <p>AVISTADO</p>
                 </div>
               </div>
               <div class="card-dados">
-                <div class="dado">
+                <div class="dado" *ngIf="item.species == 'Cachorro'">
                   <img src="https://img.icons8.com/ios-glyphs/30/000000/dog-sit.png" />
-                  <p class="nome">Thor</p>
+                  <p class="nome">{{item.name}}</p>
                 </div>
-                <div class="dado">
-                  <img src="https://img.icons8.com/ios-glyphs/30/000000/male.png" />
-                  <p>Macho, médio</p>
-                </div>
-                <div class="dado">
-                  <img src="https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png" />
-                  <p>Rua Carlos Mad, há 1 mês</p>
-                </div>
-              </div>
-            </div>
-          </ion-col>
-
-          <ion-col sizeLg="2" sizeMd="4" sizeXs="6">
-            <div class="card">
-              <div class="card-img">
-                <img
-                  src="https://www.thesprucepets.com/thmb/QDw4vt7XXQejL2IRztKeRLow6hA=/2776x1561/smart/filters:no_upscale()/cat-talk-eyes-553942-hero-df606397b6ff47b19f3ab98589c3e2ce.jpg">
-                <div class="card-status">
-                  <p>DESAPARECIDO</p>
-                </div>
-              </div>
-              <div class="card-dados">
-                <div class="dado">
+                <div class="dado" *ngIf="item.species == 'Gato'">
                   <img src="https://img.icons8.com/ios-glyphs/30/000000/pet-commands-train.png" />
-                  <p class="nome">Ninho</p>
+                  <p class="nome">{{item.name}}</p>
                 </div>
-                <div class="dado">
+                <div class="dado" *ngIf="item.sex == 'M'">
+                  <img src="https://img.icons8.com/ios-glyphs/30/000000/male.png" />
+                  <p>Macho, {{item.size}}</p>
+                </div>
+                <div class="dado" *ngIf="item.sex == 'F'">
                   <img src="https://img.icons8.com/ios-glyphs/30/000000/female.png" />
-                  <p>Fêmea, pequeno</p>
+                  <p>Fêmea, {{item.size}}</p>
                 </div>
                 <div class="dado">
                   <img src="https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png" />
-                  <p>Rua maria, há 3 semanas</p>
+                  <div *ngIf="item.times.dias == '0 dias'">
+                    <p>{{item.sighted.last_seen}}
+                    </p>
+                  </div>
+                  <div *ngIf="item.times.dias != '0 dias'">
+                    <p>{{item.sighted.last_seen}}, há
+                      {{item.times.anos ? item.times.anos : ''}}
+                      {{item.times.meses ? item.times.meses : ''}}
+                      {{item.times.dias ? item.times.dias : ''}}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

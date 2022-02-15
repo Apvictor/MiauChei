@@ -1,0 +1,52 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar conta</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon slot="start"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="text-info">
+      <p>Ao informar seu telefone, saiba que poderá receber ligações ou mensagens de outros usuários do App.</p>
+    </div>
+
+    <form [formGroup]="cadastro_form">
+
+      <div class="photo" (click)="takePicture()">
+        <img *ngIf="!foto" src="https://img.icons8.com/ios-glyphs/60/000000/camera--v1.png" />
+
+        <div *ngFor="let photo of photos">
+          <ion-img class="imgs" [src]="photo.webviewPath" *ngIf="foto"></ion-img>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Telefone</p>
+        <ion-item class="inputs">
+          <input type="text" formControlName="phone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000">
+        </ion-item>
+        <div class="msgError" *ngIf="f.phone.invalid && f.phone.touched">
+          <p>O campo telefone é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="termos">
+        <p>Ao continuar, você concorda com os <a href="#" target="_blank">Termos de uso</a> do aplicativo.</p>
+      </div>
+
+      <div class="btn">
+        <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="doCadastro()">
+          Enviar
+        </ion-button>
+      </div>
+
+    </form>
+
+  </div>
+</ion-content>

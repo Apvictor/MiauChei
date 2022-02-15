@@ -18,6 +18,10 @@ ion-toolbar {
     height: 43.14px;
   }
 
+  ion-buttons {
+    margin: 0 15px;
+  }
+
 }
 
 .container {
@@ -44,15 +48,19 @@ ion-toolbar {
       background: #F0F0F0;
       border-radius: 10px;
       width: 140px;
-      height: 181px;
+      height: 170px;
 
       .pet-img-lost {
+        display: flex;
+        align-items: end;
         margin: 5px auto;
         width: 43px;
         height: 116px;
       }
 
       .pet-img-sighted {
+        display: flex;
+        align-items: end;
         margin: 5px auto;
         width: 81px;
         height: 116px;
@@ -97,11 +105,23 @@ ion-toolbar {
           }
         }
 
-        .card-status {
+        .card-status-lost {
           position: relative;
           width: 100%;
           text-align: center;
           background: #FFFF00;
+          bottom: 10px;
+
+          p {
+            margin: 0;
+          }
+        }
+
+        .card-status-sighted {
+          position: relative;
+          width: 100%;
+          text-align: center;
+          background: #0292C9;
           bottom: 10px;
 
           p {

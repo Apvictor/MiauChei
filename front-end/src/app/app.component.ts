@@ -1,9 +1,5 @@
 import { NavController } from '@ionic/angular';
 import { Component } from '@angular/core';
-import { Storage } from '@capacitor/storage';
-
-const USER_NAME = 'user-name';
-const ACCESS_TOKEN_KEY = 'access-token';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',

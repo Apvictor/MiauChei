@@ -22,14 +22,16 @@ export class ConfirmacaoPage implements OnInit {
   ngOnInit() {
     if (this.tipo == "login") {
       this.title = "Login efetuado com sucesso!"
-      // this.text = "Agora escolha seu interesse de troca."
-      // this.textBtn = "OK!"
+    } else if (this.tipo == "cadastro") {
+      this.title = "Cadastro efetuado com sucesso!"
     }
   }
 
   closeModal() {
     this.modal.dismiss();
-    this.nav.navigateForward('');
+    if (this.tipo == "cadastro") {
+      this.nav.navigateForward('login');
+    }
   }
 
 }

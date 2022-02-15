@@ -1,0 +1,59 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Criar conta</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon slot="start"></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="text-info">
+      <p>Para se cadastrar é necessário passar por somente duas etapas.</p>
+    </div>
+
+    <form [formGroup]="cadastro_form">
+
+      <div class="campos">
+        <p>Nome</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="name" placeholder="Nome"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.name.invalid && f.name.touched">
+          <p>O campo nome é obrigatório!</p>
+        </div>
+      </div>
+      <div class="campos">
+        <p>E-Mail</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="email" placeholder="E-Mail"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.email.invalid && f.email.touched">
+          <p>Email fora do padrão, verifique por favor.</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Senha</p>
+        <ion-item class="inputs">
+          <ion-input formControlName="password" type="password" placeholder="Senha"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.password.invalid && f.password.touched">
+          <p>O campo senha é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="btn">
+        <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="goStep()">
+          Próximo
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
+
+</ion-content>

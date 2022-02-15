@@ -15,7 +15,7 @@ class PetsLostController extends Controller
 {
     public function lostIndex()
     {
-        $pets = Pets::where('status_id', 1)->orderBy('date_disappearance', 'DESC')->paginate(3);
+        $pets = Pets::where('status_id', 1)->orderBy('updated_at', 'DESC')->paginate(5);
 
         return view('admin.pages.pets.pets_lost.index', compact('pets'));
     }
@@ -27,7 +27,7 @@ class PetsLostController extends Controller
 
     public function lostStore(Request $request)
     {
-        $validator  = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => ['required'],
             'sex' => ['required'],
             'photo' => ['required', 'mimes:jpg,png,jpeg'],

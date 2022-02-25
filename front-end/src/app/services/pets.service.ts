@@ -26,6 +26,36 @@ export class PetsService {
   }
 
   /**
+   * Retorno de pets desaparecidos
+   * @returns 
+   */
+  petsLost() {
+    return new Promise((resolve, reject) => {
+      this.api.get('/pets-lost').subscribe((res: any) => {
+        console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
+   * Retorno de pets avistados
+   * @returns 
+   */
+  petsSighted() {
+    return new Promise((resolve, reject) => {
+      this.api.get('/pets-sighted').subscribe((res: any) => {
+        console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
    * Retorno dos meus Pets Cadastrados
    * @returns 
    */
@@ -39,4 +69,20 @@ export class PetsService {
       })
     })
   }
+
+  /**
+   * Retorno dos detalhes do pet conforme id passado
+   * @returns 
+   */
+  petsDetails(id) {
+    return new Promise((resolve, reject) => {
+      this.api.get('/pets-details/' + id).subscribe((res: any) => {
+        // console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\App;
 
+use App\Helpers\DifferentDates;
 use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
@@ -17,7 +18,7 @@ class PetsController extends Controller
      */
     public function recents()
     {
-        $data_atual = date_create(date('y-m-d'));
+        $dates_differents = new DifferentDates();
 
         $recentPets = Pets::select('*')
             ->where('status_id', 1)
@@ -29,29 +30,7 @@ class PetsController extends Controller
         for ($i = 0; $i < count($recentPets); $i++) {
             $recentPets[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $recentPets[$i]->id)->latest()->first();
 
-            $date2 = date_create(date_format($recentPets[$i]->created_at, 'y-m-d'));
-            $diff = date_diff($data_atual, $date2);
-
-            $year = intval($diff->format("%y"));
-            $month = intval($diff->format("%m"));
-            $days = intval($diff->format("%d"));
-            $result = 0;
-
-            if ($year > 0) {
-                $result = [
-                    'anos' => $year == 1 ? strval($year . ' ano') : strval($year . ' anos'),
-                    'meses' => $month == 1 ? strval($month . ' mês') : strval($month . ' meses')
-                ];
-            } elseif ($month > 0 && $month <= 12) {
-                $result = [
-                    'meses' => $month == 1 ? strval($month . ' mês') : strval($month . ' meses'),
-                    'dias' => $days == 1 ? strval($days . ' dia') : strval($days . ' dias')
-                ];
-            } elseif ($days <= 31) {
-                $result = ['dias' => $days == 1 ? strval($days . ' dia') : strval($days . ' dias')];
-            }
-
-            $recentPets[$i]->times = $result;
+            $recentPets[$i]->times = $dates_differents->dateFormat($recentPets[$i]->created_at);
         }
 
         if (count($recentPets) <= 0) {
@@ -89,5 +68,86 @@ class PetsController extends Controller
         }
 
         return response()->json($result);
+    }
+
+    /**
+     * Retorna lista de pets perdidos
+     *
+     * @return void
+     */
+    public function petsLost()
+    {
+        $dates_differents = new DifferentDates();
+
+        $petsLost = Pets::select('*')
+            ->where('status_id', 1)
+            ->orderBy('created_at', 'DESC')
+            ->get();
+
+        for ($i = 0; $i < count($petsLost); $i++) {
+            $petsLost[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsLost[$i]->id)->latest()->first();
+
+            $petsLost[$i]->times = $dates_differents->dateFormat($petsLost[$i]->created_at);
+        }
+
+        if (count($petsLost) <= 0) {
+            return response()->json(['message' => 'Sem registros']);
+        }
+
+        return response()->json($petsLost);
+    }
+
+    /**
+     * Retorna lista de pets avistados
+     *
+     * @return void
+     */
+    public function petsSighted()
+    {
+        $dates_differents = new DifferentDates();
+
+        $petsSighted = Pets::join('users', 'pets.user_id', '=', 'users.id')
+            ->join('status', 'pets.status_id', '=', 'status.id')
+            ->select(
+                'users.name as dono',
+                'pets.*',
+                'status.name as status',
+            )
+            ->where('status_id', 3)
+            ->orderBy('date_disappearance', 'DESC')
+            ->get();
+
+        $lists = [];
+        $list = [];
+        for ($i = 0; $i < count($petsSighted); $i++) {
+            $lists[$i] = $petsSighted[$i];
+            $lists[$i]['count'] = Sighted::where('pet_id', $lists[$i]->id)->count();
+            $lists[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsSighted[$i]->id)->latest()->first();
+
+            $lists[$i]->times = $dates_differents->dateFormat($petsSighted[$i]->created_at);
+            if ($lists[$i]['count'] > 0) {
+                $list[$i] = $lists[$i];
+            }
+        }
+
+        return response()->json($petsSighted);
+    }
+
+    /**
+     * Retorno detalhes do pet conforme ID passado
+     *
+     * @param integer $id
+     * @return void
+     */
+    public function petsDetails(int $id)
+    {
+        $dates_differents = new DifferentDates();
+
+        $pets = Pets::findOrFail($id);
+
+        $pets->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $pets->id)->latest()->first();
+        $pets->times = $dates_differents->dateFormat($pets->created_at);
+
+        return response()->json($pets);
     }
 }

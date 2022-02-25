@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="pet.status_id == '1'">Pets desaparecidos</ion-title>
+    <ion-title *ngIf="pet.status_id == '3'">Pets avistados</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<div class="pet-img">
+  <img src="{{pet.photo}}">
+</div>
+
+<ion-content>
+  <div class="container">
+    <div class="title">
+      <p class="name">{{pet.name}}</p>
+      <p class="endereco">{{sighted.last_seen}}, há {{time.dias}}</p>
+    </div>
+    <div class="dados">
+      <p class="text">Espécie</p>
+      <p class="text-value">{{pet.species}}</p>
+      <p class="text">Sexo</p>
+      <p class="text-value">Macho</p>
+      <p class="text">Raça</p>
+      <p class="text-value">{{pet.breed}}</p>
+      <p class="text">Porte</p>
+      <p class="text-value">{{pet.size}}</p>
+      <p class="text">Cor predominante</p>
+      <p class="text-value">{{pet.predominant_color}}</p>
+      <p class="text">Avistado em</p>
+      <p class="text-value">08/02/2022</p>
+      <p class="text">Visto por último em</p>
+      <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border" *ngIf="pet.status_id == '1'">
+  <ion-button class="btn-footer" expand="block" shape="round">
+    Avistei este Pet
+  </ion-button>
+</ion-footer>
+
+<ion-footer class="ion-no-border" *ngIf="pet.status_id == '3'">
+  <ion-button class="btn-footer" expand="block" shape="round">
+    Este Pet é meu
+  </ion-button>
+</ion-footer>

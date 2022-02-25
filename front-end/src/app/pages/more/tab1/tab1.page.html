@@ -19,15 +19,15 @@
   </div>
 
   <div class="btns-pets">
-    <div class="pet">
+    <div class="pet" routerLink="/pets-lost">
       <div class="pet-img-lost">
         <ion-img src="../../assets/lost.png"></ion-img>
       </div>
       <div class="pet-text">
-        <p>Perdidos</p>
+        <p>Desaparecidos</p>
       </div>
     </div>
-    <div class="pet">
+    <div class="pet" routerLink="/pets-sighted">
       <div class="pet-img-sighted">
         <ion-img src="../../assets/sighted.png"></ion-img>
       </div>
@@ -47,7 +47,8 @@
 
       <ion-list>
         <ion-row>
-          <ion-col sizeLg="2" sizeMd="4" sizeXs="6" *ngFor="let item of animais">
+          <ion-col sizeLg="2" sizeMd="4" sizeXs="6" *ngFor="let item of animais"
+            routerLink="/pets-details/{{item.status_id}}/{{item.id}}">
             <div class="card">
               <div class="card-img">
                 <img src="{{item.photo}}">

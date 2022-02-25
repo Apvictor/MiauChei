@@ -10,6 +10,50 @@ use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      tags={"Auth"},
+     *      path="/login",
+     *      summary="Login de Usuário",
+     *      description="Retorna usuário logado",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="email",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="password",
+     *                     type="string"
+     *                 ),
+     *                 @OA\Property(
+     *                     property="device_name",
+     *                     type="string"
+     *                 ),
+     *                 example={"email": "armandinho14.ap@gmail.com", "password": "12345678", "device_name": "Swagger"}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Forbidden"
+     *      )
+     * )
+     */
     public function login(Request $request)
     {
         $request->validate([

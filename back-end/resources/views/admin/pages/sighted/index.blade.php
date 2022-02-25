@@ -10,9 +10,6 @@
     </ol>
     <div style="display: flex; justify-content: space-between">
         <h1>Avistados</h1>
-        {{-- <a href="{{ route('status.create') }}" class="btn btn-dark">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-        </a> --}}
     </div>
 
 @stop
@@ -20,14 +17,6 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{-- <form action="{{ route('status.search') }}" method="POST" class="form form-inline">
-                @csrf
-                <input type="text" name="filter" placeholder="Pesquisar" class="form-control"
-                    value="{{ $filters['filter'] ?? '' }}">
-                <button type="submit" class="btn btn-dark">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </button>
-            </form> --}}
         </div>
         <div class="card-body">
             <table class="table table-condensed">
@@ -71,7 +60,6 @@
             </table>
         </div>
         <div class="card-footer" style="display: flex; justify-content: center;">
-            {{-- {!! $list->links() !!} --}}
         </div>
     </div>
 @stop

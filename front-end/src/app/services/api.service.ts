@@ -16,7 +16,7 @@ export class ApiService {
   ) { }
 
   post(serviceName, data) {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)
     const url = this.url + serviceName
     const options = { headers: headers, withCredentials: false }
 
@@ -24,7 +24,7 @@ export class ApiService {
   }
 
   put(serviceName, data) {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json')
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)
     const url = this.url + serviceName
     const options = { headers: headers, withCredentials: false }
 

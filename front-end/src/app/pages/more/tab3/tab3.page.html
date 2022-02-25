@@ -1,15 +1,66 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-buttons slot="start">
+      <ion-icon></ion-icon>
+    </ion-buttons>
+    <ion-title>Perfil</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="alinha">
+    <div class="photo" (click)="takePicture()">
+      <img *ngIf="!foto" src="{{user.photo}}" />
+
+      <div *ngFor="let photo of photos">
+        <ion-img class="imgs" [src]="photo.webviewPath" *ngIf="foto"></ion-img>
+      </div>
+    </div>
+  </div>
+
+  <div class="forms">
+    <form [formGroup]='profile_form'>
+
+      <div class="campos">
+        <p>Nome</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="name" placeholder="Nome" value="{{user.name}}"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.name.invalid && f.name.touched">
+          <p>O campo nome é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>E-Mail</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="email" placeholder="E-Mail" value="{{user.email}}"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.email.invalid && f.email.touched">
+          <p>Email fora do padrão, verifique por favor.</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Telefone</p>
+        <ion-item class="inputs">
+          <input type="text" formControlName="phone" placeholder="Telefone" mask="(00) 0000-0000||(00) 00000-0000"
+            value="{{user.phone}}">
+        </ion-item>
+        <div class="msgError" *ngIf="f.phone.invalid && f.phone.touched">
+          <p>O campo telefone é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="btn">
+        <ion-button type="submit" expand="block">
+          Atualizar
+        </ion-button>
+      </div>
+
+    </form>
+  </div>
 </ion-content>

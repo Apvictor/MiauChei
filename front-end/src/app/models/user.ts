@@ -1,13 +1,13 @@
 export class User {
 
-    private name: string
-    private email: string
+    public name: string
+    public email: string
     private password: string
     private device_name: string
-    private phone: string
-    private photo: string
+    public phone: string
+    public photo: string
 
-    public constructor() {
+    constructor() {
     }
 
     getName(): any {

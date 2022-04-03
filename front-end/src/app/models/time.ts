@@ -1,4 +1,3 @@
 export class Time {
-
-    dias: string
+    public dias: string
 }

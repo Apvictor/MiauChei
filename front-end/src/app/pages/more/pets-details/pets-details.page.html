@@ -60,19 +60,28 @@
       <p class="text-value">{{pet.date_disappearance}}</p>
       <p class="text">Visto por último em</p>
       <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
+      <a style="text-decoration: none;" href="tel:{{user.phone}}" *ngIf="sighted.user_pet == true">
+        <ion-chip>
+          <ion-avatar>
+            <img src="{{user.photo}}">
+          </ion-avatar>
+          <ion-label>{{user.name}}</ion-label>
+          <ion-icon name="call"></ion-icon>
+        </ion-chip>
+      </a>
     </div>
   </div>
 </ion-content>
 
-<ion-footer class="ion-no-border" *ngIf="pet.status_id == '1'">
+<ion-footer class="ion-no-border" *ngIf="user.id != pet.user_id">
   <ion-button style="--background: #FFFF00;" class="btn-footer" expand="block" shape="round"
     routerLink="/cadastro-sighted/{{pet.id}}">
     Avistei este Pet
   </ion-button>
 </ion-footer>
 
-<ion-footer class="ion-no-border" *ngIf="pet.status_id == '3'">
-  <ion-button class="btn-footer" expand="block" shape="round">
-    Este Pet é meu
+<ion-footer class="ion-no-border" *ngIf="user.id == pet.user_id">
+  <ion-button class="btn-footer" expand="block" shape="round" (click)="petFound(pet.id)">
+    Encontrei meu Pet
   </ion-button>
 </ion-footer>

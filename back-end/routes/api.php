@@ -27,4 +27,5 @@ Route::middleware('auth:sanctum')
         Route::get('pets-details/{id}', [PetsController::class, 'petsDetails']);
         Route::get('pet-sightings/{id}', [PetsController::class, 'petSightings']);
         Route::post('pets-sighted-store', [PetsController::class, 'petsSightedStore']);
+        Route::put('pet-found/{id}', [PetsController::class, 'petFound']);
     });

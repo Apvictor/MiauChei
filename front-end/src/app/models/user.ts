@@ -6,8 +6,16 @@ export class User {
     private device_name: string
     public phone: string
     public photo: string
+    public id: number
 
     constructor() {
+    }
+
+    getId(): any {
+        return this.id;
+    }
+    setId(id: any) {
+        this.id = id;
     }
 
     getName(): any {

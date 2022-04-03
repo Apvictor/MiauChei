@@ -11,10 +11,13 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <div class="container">
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
+  <div class="container">
     <div class="pets">
-      <div class="pet" *ngFor="let item of items" routerLink="/pet-sightings/{{item.id}}">
+      <div class="pet" *ngFor="let item of animais" routerLink="/pet-sightings/{{item.id}}">
         <div class="pet-img">
           <img src="{{item.photo}}">
         </div>
@@ -28,11 +31,6 @@
         </div>
       </div>
     </div>
-
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadData($event)">
-      <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="Carregando...">
-      </ion-infinite-scroll-content>
-    </ion-infinite-scroll>
   </div>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">

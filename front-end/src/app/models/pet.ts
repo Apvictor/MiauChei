@@ -12,7 +12,14 @@ export class Pet {
     public photo: string
     public status_id: string
     public id: string
+    public user_id: number
 
+    getUserId(): any {
+        return this.user_id;
+    }
+    setUserId(user_id: any) {
+        this.user_id = user_id;
+    }
     getId(): any {
         return this.id;
     }

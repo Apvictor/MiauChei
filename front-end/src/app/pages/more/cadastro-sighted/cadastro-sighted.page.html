@@ -17,25 +17,35 @@
       <div class="campos">
         <p>Data do avistamento</p>
         <ion-item class="inputs">
-          <input formControlName="data_sighted" type="text" mask="0000-M0-d0" />
+          <input formControlName="data_sighted" type="text" mask="d0/M0/0000" />
         </ion-item>
         <div class="msgError" *ngIf="f.data_sighted.invalid && f.data_sighted.touched">
           <p>O campo data de avistamento é obrigatório!</p>
         </div>
       </div>
+
       <div class="campos">
         <p>Última vez visto</p>
         <ion-item class="inputs">
-          <ion-input type="text" formControlName="last_seen"></ion-input>
+          <ion-input type="text" formControlName="last_seen" placeholder="Rua"></ion-input>
         </ion-item>
         <div class="msgError" *ngIf="f.last_seen.invalid && f.last_seen.touched">
           <p>O campo última vez visto é obrigatório!</p>
         </div>
       </div>
 
+      <div class="campos">
+        <p>Está com o Pet?</p>
+        <ion-item class="inputs">
+          <ion-select formControlName="user_pet" placeholder="Selecione um">
+            <ion-select-option value="false">Não</ion-select-option>
+            <ion-select-option value="true">Sim</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
       <div class="btn">
         <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsSightedStore()">
-        <!-- <ion-button expand="block" (click)="petsStore()"> -->
           Enviar
         </ion-button>
       </div>

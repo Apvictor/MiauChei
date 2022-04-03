@@ -11,7 +11,7 @@ class Sighted extends Model
 
     protected $table = 'sighted';
 
-    protected $fillable = ['last_seen', 'data_sighted', 'user_id', 'pet_id'];
+    protected $fillable = ['last_seen', 'data_sighted', 'user_id', 'pet_id', 'user_pet'];
 
     public function pets()
     {

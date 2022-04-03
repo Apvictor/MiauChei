@@ -100,7 +100,7 @@
       <div class="campos">
         <p>Data de Desaparecimento</p>
         <ion-item class="inputs">
-          <input formControlName="date_disappearance" type="text" mask="0000-M0-d0" />
+          <input formControlName="date_disappearance" type="text" mask="d0/M0/0000" />
         </ion-item>
         <div class="msgError" *ngIf="f.date_disappearance.invalid && f.date_disappearance.touched">
           <p>O campo data de desaparecimento é obrigatório!</p>
@@ -110,7 +110,7 @@
       <div class="campos">
         <p>Última vez visto</p>
         <ion-item class="inputs">
-          <ion-input type="text" formControlName="last_seen"></ion-input>
+          <ion-input type="text" formControlName="last_seen" placeholder="Rua"></ion-input>
         </ion-item>
         <div class="msgError" *ngIf="f.last_seen.invalid && f.last_seen.touched">
           <p>O campo última vez visto é obrigatório!</p>
@@ -119,7 +119,6 @@
 
       <div class="btn">
         <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsStore()">
-        <!-- <ion-button expand="block" (click)="petsStore()"> -->
           Enviar
         </ion-button>
       </div>

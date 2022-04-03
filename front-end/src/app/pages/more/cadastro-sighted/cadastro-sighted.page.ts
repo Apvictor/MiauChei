@@ -14,7 +14,6 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CadastroSightedPage implements OnInit {
   sighted = new Sighted();
-  pet = new Pet();
   cadastro_form: FormGroup
 
   constructor(
@@ -35,14 +34,16 @@ export class CadastroSightedPage implements OnInit {
     this.cadastro_form = this.formBuilder.group({
       data_sighted: new FormControl('', Validators.compose([Validators.required])),
       last_seen: new FormControl('', Validators.compose([Validators.required])),
+      user_pet: new FormControl('', Validators.compose([Validators.required])),
     })
   }
 
   get f() { return this.cadastro_form.controls }
 
-  petsSightedStore(){
+  petsSightedStore() {
     this.sighted.setDataSighted(this.cadastro_form.value['data_sighted']);
     this.sighted.setLastSeen(this.cadastro_form.value['last_seen']);
+    this.sighted.setUserPet(this.cadastro_form.value['user_pet'] == 'true' ? true : false);
 
     try {
       this.petsService.petsSightedStore(this.sighted)

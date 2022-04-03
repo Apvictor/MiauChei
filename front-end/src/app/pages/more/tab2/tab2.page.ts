@@ -9,8 +9,7 @@ import { Component, } from '@angular/core';
 })
 export class Tab2Page {
 
-  animais = []
-  items = []
+  animais
 
   constructor(
     private loading: LoadingService,
@@ -26,27 +25,17 @@ export class Tab2Page {
     try {
       this.pets.myPets().then((pets) => {
         this.loading.dismissLoading();
-        this.animais['item'] = pets;
-
-        for (let i = 0; i < this.animais['item'].length; i++) {
-          this.items.push(pets[i]);
-        }
+        this.animais = pets;
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
   }
 
-  loadData(event) {
+  doRefresh(event) {
     setTimeout(() => {
-      console.log('Done');
       this.myPets();
       event.target.complete();
-      if (this.animais.length == 5) {
-        event.target.disabled = true;
-      }
-    }, 500);
+    }, 1000);
   }
 }

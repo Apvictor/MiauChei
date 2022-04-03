@@ -6,6 +6,7 @@ use App\Helpers\DifferentDates;
 use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -205,20 +206,16 @@ class PetsController extends Controller
         return response()->json($petsSighted);
     }
 
-    /**
-     * Retorno detalhes do pet conforme ID passado
-     *
-     * @param integer $id
-     * @return void
-     */
+    // Retorno detalhes do pet conforme ID passado
     public function petsDetails(int $id)
     {
         $dates_differents = new DifferentDates();
 
         $pets = Pets::findOrFail($id);
 
-        $pets->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $pets->id)->latest()->first();
+        $pets->sighted = Sighted::select('last_seen', 'data_sighted', 'user_pet')->where('pet_id', $pets->id)->latest()->first();
         $pets->times = $dates_differents->dateFormat($pets->created_at);
+        $pets->user = Auth::user();
 
         return response()->json($pets);
     }
@@ -252,6 +249,9 @@ class PetsController extends Controller
             $dados['photo'] = $url;
         }
 
+        $date = new \DateTime($dados['date_disappearance']);
+        $data_format = $date->format('Y-m-d');
+        
         $pet = new Pets();
         $pet->name = $dados['name'];
         $pet->species = $dados['species'];
@@ -261,7 +261,7 @@ class PetsController extends Controller
         $pet->predominant_color = $dados['predominant_color'];
         $pet->secondary_color = $dados['secondary_color'] ?? null;
         $pet->physical_details = $dados['physical_details'] ?? null;
-        $pet->date_disappearance = $dados['date_disappearance'];
+        $pet->date_disappearance = $data_format;
         $pet->photo = $dados['photo'];
         $pet->uuid = $dados['uuid'];
         $pet->user_id = Auth::user()->id;
@@ -271,7 +271,7 @@ class PetsController extends Controller
 
         $sighted = new Sighted();
         $sighted->last_seen = $dados['last_seen'];
-        $sighted->data_sighted = $dados['date_disappearance'];
+        $sighted->data_sighted = $data_format;
         $sighted->user_id = Auth::user()->id;
 
         $pet->sighted()->save($sighted);
@@ -304,23 +304,26 @@ class PetsController extends Controller
 
     public function petsSightedStore(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'data_sighted' => ['required'],
             'pet_id' => ['required'],
             'last_seen' => ['required'],
+            'user_pet' => ['required'],
         ]);
 
         if ($validator->fails()) {
             return response()->json(['message' => $validator->messages()->all()[0]], 400);
         } else {
             $data = $request->all();
+            $date = new \DateTime($data['data_sighted']);
+            $data_format = $date->format('Y-m-d');
 
             $sighted = Sighted::create([
                 'user_id' => Auth::user()->id,
                 'pet_id' => $data['pet_id'],
-                'data_sighted' => $data['data_sighted'],
-                'last_seen' => $data['last_seen']
+                'data_sighted' => $data_format,
+                'last_seen' => $data['last_seen'],
+                'user_pet' => $data['user_pet']
             ]);
 
             $pet = Pets::findOrFail($data['pet_id']);
@@ -330,9 +333,24 @@ class PetsController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'Cadastro efetuado com sucesso!',
-                '$sighted' => $sighted,
-                '$pet' => $pet
+                'sighted' => $sighted,
+                'pet' => $pet
             ]);
         }
+    }
+
+    // Pet encontrado, atualização do status_id
+    public function petFound($id)
+    {
+        $pet = Pets::findOrFail($id);
+        $pet->status_id = 2;
+        $pet->date_disappearance = Carbon::now()->format('Y-m-d');
+        $pet->save();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Atualização efetuada com sucesso!',
+            'pet' => $pet
+        ]);
     }
 }

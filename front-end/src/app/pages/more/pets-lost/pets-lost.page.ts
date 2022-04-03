@@ -26,13 +26,17 @@ export class PetsLostPage implements OnInit {
       this.pets.petsLost().then((pets) => {
         this.loading.dismissLoading();
         this.animais = pets;
-        console.log(pets);
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
+  }
+
+  doRefresh(event) {
+    setTimeout(() => {
+      this.petsLost();
+      event.target.complete();
+    }, 1000);
   }
 
 }

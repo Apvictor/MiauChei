@@ -5,12 +5,16 @@
     </ion-buttons>
     <ion-title>Pets desaparecidos</ion-title>
     <ion-buttons slot="end">
-      <ion-icon></ion-icon>
+      <ion-icon size="large"></ion-icon>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <div class="container">
     <div class="pets">
       <div class="pet" *ngFor="let item of animais" routerLink="/pets-details/{{item.status_id}}/{{item.id}}">

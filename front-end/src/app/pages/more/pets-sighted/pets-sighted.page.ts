@@ -26,12 +26,16 @@ export class PetsSightedPage implements OnInit {
       this.pets.petsSighted().then((pets) => {
         this.loading.dismissLoading();
         this.animais = pets;
-        console.log(pets);
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
+  }
+
+  doRefresh(event) {
+    setTimeout(() => {
+      this.petsSighted();
+      event.target.complete();
+    }, 1000);
   }
 }

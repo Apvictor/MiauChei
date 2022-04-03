@@ -1,3 +1,6 @@
+import { NavController } from '@ionic/angular';
+import { AlertService } from './../../../components/alert.service';
+import { User } from './../../../models/user';
 import { Sighted } from './../../../models/sighted';
 import { Time } from './../../../models/time';
 import { ActivatedRoute } from '@angular/router';
@@ -14,13 +17,16 @@ import { Component, OnInit } from '@angular/core';
 export class PetsDetailsPage implements OnInit {
 
   pet = new Pet()
-  time = new Time
-  sighted = new Sighted
+  user = new User()
+  time = new Time()
+  sighted = new Sighted()
 
   constructor(
     private petsService: PetsService,
     private loading: LoadingService,
     private route: ActivatedRoute,
+    private alert: AlertService,
+    private nav: NavController
   ) { }
 
   ngOnInit() {
@@ -47,16 +53,35 @@ export class PetsDetailsPage implements OnInit {
         this.pet.status_id = pets['status_id'];
         this.pet.name = pets['name'];
         this.pet.date_disappearance = pets['date_disappearance'];
+        this.pet.user_id = pets['user_id'];
 
         this.time.dias = pets['times']['dias']
 
         this.sighted.last_seen = pets['sighted']['last_seen']
         this.sighted.data_sighted = pets['sighted']['data_sighted']
+        this.sighted.user_pet = pets['sighted']['user_pet']
 
+        this.user.phone = pets['user']['phone']
+        this.user.name = pets['user']['name']
+        this.user.photo = pets['user']['photo']
+        this.user.id = pets['user']['id']
         console.log(pets);
-        
       })
         .catch(err => {
+        })
+    } catch (err) {
+      console.log("erro " + err)
+    }
+  }
+
+  petFound(id){
+    try {
+      this.petsService.petFound(id)
+        .then(() => {
+          this.nav.back();
+        })
+        .catch(err => {
+          this.alert.showAlertError(err);
         })
     } catch (err) {
       console.log("erro " + err)

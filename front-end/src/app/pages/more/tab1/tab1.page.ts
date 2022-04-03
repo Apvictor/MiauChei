@@ -36,10 +36,16 @@ export class Tab1Page {
         this.loading.dismissLoading();
         this.animais = pets;
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
+  }
+
+  doRefresh(event) {
+    setTimeout(() => {
+      this.recentsPets();
+      this.getNameUser();
+      event.target.complete();
+    }, 1000);
   }
 }

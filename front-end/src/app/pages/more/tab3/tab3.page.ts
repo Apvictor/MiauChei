@@ -31,7 +31,6 @@ export class Tab3Page {
 
   ngOnInit() {
     this.profile();
-
     this.profile_form = this.formBuilder.group({
       name: new FormControl('', Validators.compose([Validators.required])),
       email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
@@ -46,10 +45,10 @@ export class Tab3Page {
     try {
       this.userService.profile().then((user) => {
         this.loading.dismissLoading();
-        this.user.setName(user['name']);
-        this.user.setEmail(user['email']);
-        this.user.setPhone(user['phone']);
-        this.user.setPhoto(user['photo']);
+        this.user.name = user['name'];
+        this.user.email = user['email'];
+        this.user.phone = user['phone'];
+        this.user.photo = user['photo'];
       })
         .catch(err => {
         })
@@ -58,16 +57,42 @@ export class Tab3Page {
     }
   }
 
+  async postProfile() {
+    this.loading.presentLoading();
+    try {
+      if (this.profile_form.value['name'] != '') {
+        this.user.setName(this.profile_form.value['name'])
+      } else {
+        this.user.name = this.user.getName();
+      }
 
+      if (this.profile_form.value['email'] != '') {
+        this.user.setEmail(this.profile_form.value['email']);
+      } else {
+        this.user.email = this.user.getEmail();
+      }
 
+      if (this.profile_form.value['phone'] != '') {
+        this.user.setPhone(this.profile_form.value['phone']);
+      } else {
+        this.user.phone = this.user.getPhone();
+      }
 
+      if (typeof this.foto_form === 'undefined') {
+        console.log('sem atualização na foto');
+      } else {
+        this.user.setPhoto(this.foto_form);
+      }
 
-
-
-
-
-
-
+      this.userService.postProfile(this.user).then((user) => {
+        this.loading.dismissLoading();
+      })
+        .catch(err => {
+        })
+    } catch (err) {
+      console.log("erro " + err)
+    }
+  }
 
   async takePicture() {
     this.photos = []

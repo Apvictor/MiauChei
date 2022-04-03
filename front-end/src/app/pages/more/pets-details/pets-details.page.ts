@@ -36,6 +36,7 @@ export class PetsDetailsPage implements OnInit {
     try {
       this.petsService.petsDetails(id).then((pets) => {
         this.loading.dismissLoading();
+        this.pet.id = pets['id'];
         this.pet.name = pets['name'];
         this.pet.photo = pets['photo'];
         this.pet.species = pets['species'];
@@ -45,10 +46,15 @@ export class PetsDetailsPage implements OnInit {
         this.pet.predominant_color = pets['predominant_color'];
         this.pet.status_id = pets['status_id'];
         this.pet.name = pets['name'];
+        this.pet.date_disappearance = pets['date_disappearance'];
 
         this.time.dias = pets['times']['dias']
+
         this.sighted.last_seen = pets['sighted']['last_seen']
         this.sighted.data_sighted = pets['sighted']['data_sighted']
+
+        console.log(pets);
+        
       })
         .catch(err => {
         })

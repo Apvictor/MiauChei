@@ -60,6 +60,232 @@
                 }
             }
         },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Cadastro de Usuários",
+                "description": "Cadastrar usuários na base de dados",
+                "operationId": "4591034306ff284dd0fa14811d35a341",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Teste"
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@gmail.com"
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Senha do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 12345678
+                    },
+                    {
+                        "name": "phone",
+                        "in": "query",
+                        "description": "Telefone do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": 11995052373
+                    },
+                    {
+                        "name": "photo",
+                        "in": "query",
+                        "description": "Foto do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/recents": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Pets recente",
+                "description": "Retorno de pets cadastrados recentemente",
+                "operationId": "d8c66bcd0576d15add3aab2b8b3a0f48",
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/mypets": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Meus Pets",
+                "description": "Retorno dos pets cadastrados pelo usuário logado",
+                "operationId": "dd8f2a06ba9a7706ba23f2517a13ab1e",
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pets-lost": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Pets perdidos",
+                "description": "Retorna lista de pets perdidos",
+                "operationId": "124038c31a7407d99256ce4bd2a9ef19",
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pets-sighted": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Pets avistados",
+                "description": "Retorna lista de pets avistados",
+                "operationId": "41d4fcc8e71a99966fde6b6470ab98c2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/pets-details/{id}": {
+            "get": {
+                "tags": [
+                    "Pets"
+                ],
+                "summary": "Detalhes pet",
+                "description": "Retorno detalhes do pet conforme ID passado",
+                "operationId": "cf3c5e99e2d4583b9e69d201ec0bff4a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id do pet",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 17
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {}
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/profile": {
             "get": {
                 "tags": [

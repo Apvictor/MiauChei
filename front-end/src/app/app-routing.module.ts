@@ -33,7 +33,19 @@ const routes: Routes = [
   {
     path: 'pets-details/:tipo/:id',
     loadChildren: () => import('./pages/more/pets-details/pets-details.module').then(m => m.PetsDetailsPageModule)
-  }
+  },
+  {
+    path: 'cadastro-pet',
+    loadChildren: () => import('./pages/more/cadastro-pet/cadastro-pet.module').then( m => m.CadastroPetPageModule)
+  },
+  {
+    path: 'pet-sightings/:id',
+    loadChildren: () => import('./pages/more/pet-sightings/pet-sightings.module').then( m => m.PetSightingsPageModule)
+  },
+  {
+    path: 'cadastro-sighted/:id',
+    loadChildren: () => import('./pages/more/cadastro-sighted/cadastro-sighted.module').then( m => m.CadastroSightedPageModule)
+  },
 ];
 @NgModule({
   imports: [

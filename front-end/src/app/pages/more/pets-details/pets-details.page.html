@@ -16,7 +16,31 @@
 </div>
 
 <ion-content>
-  <div class="container">
+  <div class="container" *ngIf="pet.status_id == '1'">
+    <div class="title" style="background: #FFFF00;">
+      <p class="name">{{pet.name}}</p>
+      <p class="endereco">{{sighted.last_seen}}, há {{time.dias}}</p>
+    </div>
+    <div class="dados">
+      <p class="text">Espécie</p>
+      <p class="text-value">{{pet.species}}</p>
+      <p class="text">Sexo</p>
+      <p class="text-value" *ngIf="pet.sex == 'F'">Fêmea</p>
+      <p class="text-value" *ngIf="pet.sex == 'M'">Macho</p>
+      <p class="text">Raça</p>
+      <p class="text-value">{{pet.breed}}</p>
+      <p class="text">Porte</p>
+      <p class="text-value">{{pet.size}}</p>
+      <p class="text">Cor predominante</p>
+      <p class="text-value">{{pet.predominant_color}}</p>
+      <p class="text">Avistado em</p>
+      <p class="text-value">{{pet.date_disappearance}}</p>
+      <p class="text">Visto por último em</p>
+      <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="pet.status_id == '3'">
     <div class="title">
       <p class="name">{{pet.name}}</p>
       <p class="endereco">{{sighted.last_seen}}, há {{time.dias}}</p>
@@ -25,7 +49,7 @@
       <p class="text">Espécie</p>
       <p class="text-value">{{pet.species}}</p>
       <p class="text">Sexo</p>
-      <p class="text-value">Macho</p>
+      <p class="text-value">{{pet.sex}}</p>
       <p class="text">Raça</p>
       <p class="text-value">{{pet.breed}}</p>
       <p class="text">Porte</p>
@@ -33,7 +57,7 @@
       <p class="text">Cor predominante</p>
       <p class="text-value">{{pet.predominant_color}}</p>
       <p class="text">Avistado em</p>
-      <p class="text-value">08/02/2022</p>
+      <p class="text-value">{{pet.date_disappearance}}</p>
       <p class="text">Visto por último em</p>
       <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
     </div>
@@ -41,7 +65,8 @@
 </ion-content>
 
 <ion-footer class="ion-no-border" *ngIf="pet.status_id == '1'">
-  <ion-button class="btn-footer" expand="block" shape="round">
+  <ion-button style="--background: #FFFF00;" class="btn-footer" expand="block" shape="round"
+    routerLink="/cadastro-sighted/{{pet.id}}">
     Avistei este Pet
   </ion-button>
 </ion-footer>

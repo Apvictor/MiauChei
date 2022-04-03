@@ -17,10 +17,14 @@ Route::middleware('auth:sanctum')
     ->group(function () {
 
         Route::get('profile', [UserController::class, 'getProfile']);
+        Route::post('profile', [UserController::class, 'postProfile']);
 
+        Route::post('pets-store', [PetsController::class, 'petsStore']);
         Route::get('recents', [PetsController::class, 'recents']);
         Route::get('mypets', [PetsController::class, 'myPets']);
         Route::get('pets-lost', [PetsController::class, 'petsLost']);
         Route::get('pets-sighted', [PetsController::class, 'petsSighted']);
         Route::get('pets-details/{id}', [PetsController::class, 'petsDetails']);
+        Route::get('pet-sightings/{id}', [PetsController::class, 'petSightings']);
+        Route::post('pets-sighted-store', [PetsController::class, 'petsSightedStore']);
     });

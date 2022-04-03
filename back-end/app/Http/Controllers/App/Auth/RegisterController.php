@@ -12,6 +12,57 @@ use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      tags={"Auth"},
+     *      path="/register",
+     *      summary="Cadastro de Usuários",
+     *      description="Cadastrar usuários na base de dados",
+     *    @OA\Parameter(
+     *          name="name",
+     *          in="query",
+     *          description="Nome do usuário",
+     *          required=true,
+     *          example="Teste",
+     *          @OA\Schema(type="string",),
+     *      ),
+     *      @OA\Parameter(
+     *          name="email",
+     *          in="query",
+     *          description="Email do usuário",
+     *          required=true, 
+     *          example="teste@gmail.com",
+     *          @OA\Schema(type="string",),
+     *      ),
+     *      @OA\Parameter(
+     *          name="password",
+     *          in="query",
+     *          description="Senha do usuário",
+     *          required=true, 
+     *          example=12345678,
+     *          @OA\Schema(type="string",),
+     *      ),
+     *      @OA\Parameter(
+     *          name="phone",
+     *          in="query",
+     *          description="Telefone do usuário",
+     *          required=true, 
+     *          example=11995052373,
+     *          @OA\Schema(type="string",),
+     *      ),
+     *      @OA\Parameter(
+     *          name="photo",
+     *          in="query",
+     *          description="Foto do usuário",
+     *          required=true, 
+     *          @OA\Schema(type="string",),
+     *      ),
+     * 
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json",)),
+     *      @OA\Response(response=201,description="Successful operation",),
+     *      @OA\Response(response=400,description="Bad Request"),
+     * )
+     */
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [

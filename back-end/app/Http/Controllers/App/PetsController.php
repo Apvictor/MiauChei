@@ -8,13 +8,34 @@ use App\Models\Pets;
 use App\Models\Sighted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class PetsController extends Controller
 {
     /**
-     * Retorno de pets cadastrados recentemente, tela home
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/recents",
+     *      summary="Pets recente",
+     *      description="Retorno de pets cadastrados recentemente",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     * )
      *
-     * @return void
      */
     public function recents()
     {
@@ -29,7 +50,6 @@ class PetsController extends Controller
 
         for ($i = 0; $i < count($recentPets); $i++) {
             $recentPets[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $recentPets[$i]->id)->latest()->first();
-
             $recentPets[$i]->times = $dates_differents->dateFormat($recentPets[$i]->created_at);
         }
 
@@ -41,11 +61,29 @@ class PetsController extends Controller
     }
 
     /**
-     * Retorno dos pets cadastrados pelo usuário logado, aba meus pets
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/mypets",
+     *      summary="Meus Pets",
+     *      description="Retorno dos pets cadastrados pelo usuário logado",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     * )
      *
-     * @return void
      */
-    public function myPets()
+    public function myPets(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user();
 
@@ -55,7 +93,6 @@ class PetsController extends Controller
             ->where('users.id', $user->id)
             ->orderBy('pets.date_disappearance', 'DESC')
             ->get();
-
 
         $result = [];
         for ($i = 0; $i < count($myPets); $i++) {
@@ -71,9 +108,27 @@ class PetsController extends Controller
     }
 
     /**
-     * Retorna lista de pets perdidos
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/pets-lost",
+     *      summary="Pets perdidos",
+     *      description="Retorna lista de pets perdidos",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     * )
      *
-     * @return void
      */
     public function petsLost()
     {
@@ -86,7 +141,6 @@ class PetsController extends Controller
 
         for ($i = 0; $i < count($petsLost); $i++) {
             $petsLost[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsLost[$i]->id)->latest()->first();
-
             $petsLost[$i]->times = $dates_differents->dateFormat($petsLost[$i]->created_at);
         }
 
@@ -98,9 +152,27 @@ class PetsController extends Controller
     }
 
     /**
-     * Retorna lista de pets avistados
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/pets-sighted",
+     *      summary="Pets avistados",
+     *      description="Retorna lista de pets avistados",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *       ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request"
+     *      ),
+     * )
      *
-     * @return void
      */
     public function petsSighted()
     {
@@ -149,5 +221,118 @@ class PetsController extends Controller
         $pets->times = $dates_differents->dateFormat($pets->created_at);
 
         return response()->json($pets);
+    }
+
+    public function petsStore(Request $request): \Illuminate\Http\JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'sex' => ['required'],
+            'photo' => ['required'],
+            'species' => ['required'],
+            'breed' => ['required'],
+            'size' => ['required'],
+            'predominant_color' => ['required'],
+            'date_disappearance' => ['required'],
+            'last_seen' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->messages()->all()[0]], 400);
+        } else {
+            $dados = $request->all();
+
+            $dados['uuid'] = Str::uuid();
+
+            $data = explode(',', $dados['photo']);
+            $folder = 'pets/';
+            $name = $folder . $dados['uuid'] . '.jpg';
+            Storage::disk('s3')->put($name, base64_decode($data[0]));
+            $url = Storage::disk('s3')->url($name);
+            $dados['photo'] = $url;
+        }
+
+        $pet = new Pets();
+        $pet->name = $dados['name'];
+        $pet->species = $dados['species'];
+        $pet->sex = $dados['sex'];
+        $pet->breed = $dados['breed'];
+        $pet->size = $dados['size'];
+        $pet->predominant_color = $dados['predominant_color'];
+        $pet->secondary_color = $dados['secondary_color'] ?? null;
+        $pet->physical_details = $dados['physical_details'] ?? null;
+        $pet->date_disappearance = $dados['date_disappearance'];
+        $pet->photo = $dados['photo'];
+        $pet->uuid = $dados['uuid'];
+        $pet->user_id = Auth::user()->id;
+        $pet->status_id = 1;
+
+        $pet->save();
+
+        $sighted = new Sighted();
+        $sighted->last_seen = $dados['last_seen'];
+        $sighted->data_sighted = $dados['date_disappearance'];
+        $sighted->user_id = Auth::user()->id;
+
+        $pet->sighted()->save($sighted);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Cadastro efetuado com sucesso!',
+            'pet' => $pet
+        ]);
+    }
+
+    //Lista de avistamentos do Pet
+    public function petSightings(int $id): \Illuminate\Http\JsonResponse
+    {
+        $pet = Pets::select('pets.*')->where('pets.id', $id)->get();
+
+        for ($i = 0; $i < count($pet); $i++) {
+            $dateFormat = date_create($pet[$i]->created_at);
+            $pet[$i]->publicado = date_format($dateFormat, 'd/m/Y');
+            $pet[$i]->sighted = Sighted::join('users', 'sighted.user_id', '=', 'users.id')->select('sighted.*', 'users.name as dono')->where('sighted.pet_id', $pet[$i]->id)->get();
+
+            for ($y = 0; $y < count($pet[$i]->sighted); $y++) {
+                $dateFormat = date_create($pet[$i]->sighted[$y]->data_sighted);
+                $pet[$i]->sighted[$y]['data_perdido'] = date_format($dateFormat, 'd/m/Y');
+            }
+        }
+
+        return response()->json($pet);
+    }
+
+    public function petsSightedStore(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'data_sighted' => ['required'],
+            'pet_id' => ['required'],
+            'last_seen' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->messages()->all()[0]], 400);
+        } else {
+            $data = $request->all();
+
+            $sighted = Sighted::create([
+                'user_id' => Auth::user()->id,
+                'pet_id' => $data['pet_id'],
+                'data_sighted' => $data['data_sighted'],
+                'last_seen' => $data['last_seen']
+            ]);
+
+            $pet = Pets::findOrFail($data['pet_id']);
+            $pet->status_id = 3;
+            $pet->save();
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Cadastro efetuado com sucesso!',
+                '$sighted' => $sighted,
+                '$pet' => $pet
+            ]);
+        }
     }
 }

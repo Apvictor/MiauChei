@@ -19,6 +19,7 @@ class SightedController extends Controller
                 'pets.*',
                 'status.name as status',
             )
+            ->where('status_id', 3)
             ->orderBy('date_disappearance', 'DESC')
             ->get();
 

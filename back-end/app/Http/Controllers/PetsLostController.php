@@ -73,7 +73,7 @@ class PetsLostController extends Controller
         $pet->size = $dados['size'];
         $pet->predominant_color = $dados['predominant_color'];
         $pet->secondary_color = $dados['secondary_color'];
-        $pet->physical_details = $dados['physical_details'];
+        $pet->physical_details = $dados['physical_details'] ?? null;
         $pet->date_disappearance = $dados['date_disappearance'];
         $pet->photo = $dados['photo'];
         $pet->uuid = $dados['uuid'];

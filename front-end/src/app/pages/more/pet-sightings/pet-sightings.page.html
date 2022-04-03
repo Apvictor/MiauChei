@@ -1,0 +1,53 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Avistamentos</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="pets">
+      <div class="pet" *ngFor="let item of animais" routerLink="/pets-details/{{item.status_id}}/{{item.id}}">
+        <div class="pet-img">
+          <img src="{{item.photo}}">
+        </div>
+        <div class="card-dados">
+          <div class="dado" *ngIf="item.species == 'Cachorro'">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/dog-sit.png" />
+            <p class="nome">{{item.name}}</p>
+          </div>
+          <div class="dado" *ngIf="item.species == 'Gato'">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/pet-commands-train.png" />
+            <p class="nome">{{item.name}}</p>
+          </div>
+          <div class="dado" *ngIf="item.sex == 'M'">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/male.png" />
+            <p>Macho, {{item.size}}</p>
+          </div>
+          <div class="dado" *ngIf="item.sex == 'F'">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/female.png" />
+            <p>Fêmea, {{item.size}}</p>
+          </div>
+          <div class="dado">
+            <img src="https://img.icons8.com/ios-glyphs/30/000000/marker--v1.png" />
+            <p>{{item.publicado}}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h3>Avistamentos</h3>
+        <div class="dados-avistamentos" *ngFor="let item of avistamentos">
+          <p>{{item.data_perdido}} - {{item.dono}}</p>
+          <p>{{item.last_seen}}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</ion-content>

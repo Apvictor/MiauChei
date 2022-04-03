@@ -1,0 +1,129 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Cadastrar Pet</ion-title>
+    <ion-buttons slot="end">
+      <ion-icon></ion-icon>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <form [formGroup]="cadastro_form">
+
+      <div class="photo" (click)="takePicture()">
+        <img *ngIf="!foto" src="https://img.icons8.com/ios-glyphs/60/000000/camera--v1.png" />
+
+        <div *ngFor="let photo of photos">
+          <ion-img class="imgs" [src]="photo.webviewPath" *ngIf="foto"></ion-img>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Nome</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="name"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.name.invalid && f.name.touched">
+          <p>O campo nome é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Sexo</p>
+        <ion-item class="inputs">
+          <ion-select formControlName="sex" placeholder="Selecione um">
+            <ion-select-option value="F">Fêmea</ion-select-option>
+            <ion-select-option value="M">Macho</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="campos">
+        <p>Espécie</p>
+        <ion-item class="inputs">
+          <ion-select formControlName="species" placeholder="Selecione um">
+            <ion-select-option value="Cachorro">Cachorro</ion-select-option>
+            <ion-select-option value="Gato">Gato</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="campos">
+        <p>Raça</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="breed"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.breed.invalid && f.breed.touched">
+          <p>O campo raça é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Tamanho</p>
+        <ion-item class="inputs">
+          <ion-select formControlName="size" placeholder="Selecione um">
+            <ion-select-option value="Pequeno">Pequeno</ion-select-option>
+            <ion-select-option value="Médio">Médio</ion-select-option>
+            <ion-select-option value="Grande">Grande</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="campos">
+        <p>Cor Predominante</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="predominant_color"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.predominant_color.invalid && f.predominant_color.touched">
+          <p>O campo cor predominante é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Cor Secundária</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="secondary_color"></ion-input>
+        </ion-item>
+      </div>
+
+      <div class="campos">
+        <p>Detalhes Físico</p>
+        <ion-item class="inputs">
+          <ion-textarea formControlName="physical_details" clearOnEdit="true"></ion-textarea>
+        </ion-item>
+      </div>
+
+      <div class="campos">
+        <p>Data de Desaparecimento</p>
+        <ion-item class="inputs">
+          <input formControlName="date_disappearance" type="text" mask="0000-M0-d0" />
+        </ion-item>
+        <div class="msgError" *ngIf="f.date_disappearance.invalid && f.date_disappearance.touched">
+          <p>O campo data de desaparecimento é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="campos">
+        <p>Última vez visto</p>
+        <ion-item class="inputs">
+          <ion-input type="text" formControlName="last_seen"></ion-input>
+        </ion-item>
+        <div class="msgError" *ngIf="f.last_seen.invalid && f.last_seen.touched">
+          <p>O campo última vez visto é obrigatório!</p>
+        </div>
+      </div>
+
+      <div class="btn">
+        <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsStore()">
+        <!-- <ion-button expand="block" (click)="petsStore()"> -->
+          Enviar
+        </ion-button>
+      </div>
+    </form>
+  </div>
+
+</ion-content>

@@ -11,8 +11,7 @@ export class PetsService {
   ) { }
 
   /**
-   * Retorno de pets cadastrados recentemente
-   * @returns 
+   * Retorno de pets cadastrados recentemente 
    */
   recents() {
     return new Promise((resolve, reject) => {
@@ -26,8 +25,7 @@ export class PetsService {
   }
 
   /**
-   * Retorno de pets desaparecidos
-   * @returns 
+   * Retorno de pets desaparecidos 
    */
   petsLost() {
     return new Promise((resolve, reject) => {
@@ -41,8 +39,7 @@ export class PetsService {
   }
 
   /**
-   * Retorno de pets avistados
-   * @returns 
+   * Retorno de pets avistados 
    */
   petsSighted() {
     return new Promise((resolve, reject) => {
@@ -56,8 +53,7 @@ export class PetsService {
   }
 
   /**
-   * Retorno dos meus Pets Cadastrados
-   * @returns 
+   * Retorno dos meus Pets Cadastrados 
    */
   myPets() {
     return new Promise((resolve, reject) => {
@@ -71,12 +67,52 @@ export class PetsService {
   }
 
   /**
-   * Retorno dos detalhes do pet conforme id passado
-   * @returns 
+   * Retorno dos detalhes do pet conforme id passado 
    */
   petsDetails(id) {
     return new Promise((resolve, reject) => {
       this.api.get('/pets-details/' + id).subscribe((res: any) => {
+        // console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
+   * Cadastro de pets perdidos 
+   */
+  petsStore(data) {
+    return new Promise((resolve, reject) => {
+      this.api.post('/pets-store', data).subscribe((res: any) => {
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
+   * Retorno dos avistamentos do pet
+   */
+  petSightings(id) {
+    return new Promise((resolve, reject) => {
+      this.api.get('/pet-sightings/' + id).subscribe((res: any) => {
+        // console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
+  /**
+   * Cadastro de avistamentos
+   */
+  petsSightedStore(data) {
+    return new Promise((resolve, reject) => {
+      this.api.post('/pets-sighted-store', data).subscribe((res: any) => {
         // console.log(res);
         resolve(res)
       }, err => {

@@ -20,4 +20,15 @@ export class UserService {
       })
     })
   }
+
+  postProfile(data) {
+    return new Promise((resolve, reject) => {
+      this.api.post('/profile', data).subscribe((res: any) => {
+        console.log(res);
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
 }

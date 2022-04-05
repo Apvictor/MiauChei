@@ -84,6 +84,9 @@ export class CadastroPetPage implements OnInit {
       const profilePicture = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
+        promptLabelHeader: 'Câmera',
+        promptLabelPhoto: 'Galeria de imagens',
+        promptLabelPicture: 'Tirar foto',
         resultType: CameraResultType.Base64
       }).then(image => {
         this.photos.unshift({

@@ -72,7 +72,7 @@ export class PetsService {
   petsDetails(id) {
     return new Promise((resolve, reject) => {
       this.api.get('/pets-details/' + id).subscribe((res: any) => {
-        // console.log(res);
+        console.log(res);
         resolve(res)
       }, err => {
         reject(err)
@@ -99,7 +99,7 @@ export class PetsService {
   petSightings(id) {
     return new Promise((resolve, reject) => {
       this.api.get('/pet-sightings/' + id).subscribe((res: any) => {
-        // console.log(res);
+        console.log(res);
         resolve(res)
       }, err => {
         reject(err)
@@ -113,7 +113,7 @@ export class PetsService {
   petsSightedStore(data) {
     return new Promise((resolve, reject) => {
       this.api.post('/pets-sighted-store', data).subscribe((res: any) => {
-        // console.log(res);
+        console.log(res);
         resolve(res)
       }, err => {
         reject(err)
@@ -127,7 +127,7 @@ export class PetsService {
   petFound(id, data = null) {
     return new Promise((resolve, reject) => {
       this.api.put('/pet-found/' + id, data).subscribe((res: any) => {
-        // console.log(res);
+        console.log(res);
         resolve(res)
       }, err => {
         reject(err)

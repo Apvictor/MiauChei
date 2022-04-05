@@ -65,16 +65,13 @@ export class PetsDetailsPage implements OnInit {
         this.user.name = pets['user']['name']
         this.user.photo = pets['user']['photo']
         this.user.id = pets['user']['id']
-        console.log(pets);
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
   }
 
-  petFound(id){
+  petFound(id) {
     try {
       this.petsService.petFound(id)
         .then(() => {

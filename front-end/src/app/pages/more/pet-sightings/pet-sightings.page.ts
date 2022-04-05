@@ -34,10 +34,7 @@ export class PetSightingsPage implements OnInit {
         this.loading.dismissLoading();
         this.animais = pets;
         this.avistamentos = pets[0].sighted;
-        console.log(pets);
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }

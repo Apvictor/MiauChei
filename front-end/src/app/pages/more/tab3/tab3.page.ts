@@ -50,8 +50,6 @@ export class Tab3Page {
         this.user.phone = user['phone'];
         this.user.photo = user['photo'];
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
@@ -59,36 +57,32 @@ export class Tab3Page {
 
   async postProfile() {
     this.loading.presentLoading();
+    if (this.profile_form.value['name'] != '') {
+      this.user.setName(this.profile_form.value['name'])
+    } else {
+      this.user.name = this.user.getName();
+    }
+
+    if (this.profile_form.value['email'] != '') {
+      this.user.setEmail(this.profile_form.value['email']);
+    } else {
+      this.user.email = this.user.getEmail();
+    }
+
+    if (this.profile_form.value['phone'] != '') {
+      this.user.setPhone(this.profile_form.value['phone']);
+    } else {
+      this.user.phone = this.user.getPhone();
+    }
+
+    if (this.foto == true) {
+      this.user.setPhoto(this.foto_form);
+    }    
+
     try {
-      if (this.profile_form.value['name'] != '') {
-        this.user.setName(this.profile_form.value['name'])
-      } else {
-        this.user.name = this.user.getName();
-      }
-
-      if (this.profile_form.value['email'] != '') {
-        this.user.setEmail(this.profile_form.value['email']);
-      } else {
-        this.user.email = this.user.getEmail();
-      }
-
-      if (this.profile_form.value['phone'] != '') {
-        this.user.setPhone(this.profile_form.value['phone']);
-      } else {
-        this.user.phone = this.user.getPhone();
-      }
-
-      if (typeof this.foto_form === 'undefined') {
-        console.log('sem atualização na foto');
-      } else {
-        this.user.setPhoto(this.foto_form);
-      }
-
-      this.userService.postProfile(this.user).then((user) => {
+      this.userService.postProfile(this.user).then(() => {
         this.loading.dismissLoading();
       })
-        .catch(err => {
-        })
     } catch (err) {
       console.log("erro " + err)
     }
@@ -101,6 +95,9 @@ export class Tab3Page {
       const profilePicture = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
+        promptLabelHeader: 'Câmera',
+        promptLabelPhoto: 'Galeria de imagens',
+        promptLabelPicture: 'Tirar foto',
         resultType: CameraResultType.Base64
       }).then(image => {
         this.photos.unshift({

@@ -49,13 +49,11 @@ export class CadastroFotoPage implements OnInit {
   async doCadastro() {
     this.user.setPhoto(this.foto_form);
     this.user.setPhone(this.cadastro_form.value['phone']);
-    console.log(this.user);
     this.showModal();
 
     try {
       this.auth.cadastro(this.user).then(() => {
         this.nav.navigateForward('login');
-      }).catch(err => {
       })
     } catch (err) {
       console.log("erro " + err)
@@ -83,6 +81,9 @@ export class CadastroFotoPage implements OnInit {
       const profilePicture = await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
+        promptLabelHeader: 'Câmera',
+        promptLabelPhoto: 'Galeria de imagens',
+        promptLabelPicture: 'Tirar foto',
         resultType: CameraResultType.Base64
       }).then(image => {
         this.photos.unshift({

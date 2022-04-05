@@ -1,10 +1,11 @@
+import { AlertService } from './../../../components/alert.service';
 import { LoadingService } from './../../../components/loading.service';
 import { User } from './../../../models/user';
 import { AuthService } from './../../../services/auth.service';
 import { ConfirmacaoPage } from './../../../modals/confirmacao/confirmacao.page';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ export class LoginPage implements OnInit {
     private modal: ModalController,
     private auth: AuthService,
     private loading: LoadingService,
+    private alert: AlertService
   ) { }
 
   ngOnInit() {
@@ -40,8 +42,9 @@ export class LoginPage implements OnInit {
 
     try {
       this.auth.login(this.user)
-        .catch(err => {
-        })
+      .catch(err => {
+        this.alert.showAlertError(err);
+      })
     } catch (err) {
       console.log("erro " + err)
     }

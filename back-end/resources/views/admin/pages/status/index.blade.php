@@ -44,11 +44,11 @@
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name }}</td>
                             <td style="width=10px;">
-                                <a href="{{ route('status.edit', $item->id) }}" class="btn btn-info">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="{{ route('status.show', $item->id) }}" class="btn btn-warning">
+                                <a href="{{ route('status.show', $item->id) }}" class="btn btn-warning" title="VER">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="{{ route('status.edit', $item->id) }}" class="btn btn-info" title="EDITAR">
+                                    <i class="fas fa-pen"></i>
                                 </a>
                             </td>
                         </tr>

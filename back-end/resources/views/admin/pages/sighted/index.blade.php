@@ -49,8 +49,8 @@
                             <td style="width=10px;">
                                 <form action="{{ route('sighted.show', $item->id) }}" method="post">
                                     @csrf
-                                    <button type="submit" class="btn btn-primary">
-                                        Avistamentos: {{ $item->count }}
+                                    <button type="submit" class="btn btn-primary" title="AVISTAMENTOS">
+                                        {{ $item->count }} <i class="fa fa-arrow-right" aria-hidden="true"></i>
                                     </button>
                                 </form>
                             </td>

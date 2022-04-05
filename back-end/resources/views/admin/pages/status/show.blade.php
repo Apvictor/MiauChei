@@ -18,7 +18,7 @@
             <form action="{{ route('status.destroy', $status->id) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> DELETAR O STATUS
+                <button type="submit" class="btn btn-danger"><i class="fas fa-trash" title="DELETAR"></i> DELETAR O STATUS
                     <b>{{ $status->name }}</b>
                 </button>
             </form>

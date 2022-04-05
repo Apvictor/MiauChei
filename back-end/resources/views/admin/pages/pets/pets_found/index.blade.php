@@ -45,7 +45,7 @@
                 <tbody>
                     @foreach ($pets as $item)
                         <tr>
-                            <td><img width="30px" height="30px" src="{{ $item->photo }}" alt="{{ $item->photo }}"></td>
+                            <td><img width="30px" height="30px" src="{{ $item->photo }}" alt="Foto do Pet"></td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->species }}</td>
                             <td>{{ $item->sex }}</td>
@@ -55,13 +55,16 @@
                             <td>{{ $item->secondary_color }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->date_disappearance)) }}</td>
                             <td style="width=10px;">
-                                <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="{{ route('pets.show', $item->id) }}" class="btn btn-warning">
+                                <a href="{{ route('pets.show', $item->id) }}" class="btn btn-warning" title="VER">
                                     <i class="fa fa-eye"></i>
                                 </a>
-                                <a href="{{ route('pets.found.lost', $item->id) }}" class="btn btn-danger">
+
+                                <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info" title="EDITAR">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
+                                <a href="{{ route('pets.found.lost', $item->id) }}" class="btn btn-danger"
+                                    title="PERDIDO">
                                     <i class="fas fa-search"></i>
                                 </a>
                             </td>

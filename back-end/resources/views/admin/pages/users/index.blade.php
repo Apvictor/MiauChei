@@ -48,11 +48,11 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->phone }}</td>
                             <td style="width=10px;">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="{{ route('users.show', $user->id) }}" class="btn btn-warning">
+                                <a href="{{ route('users.show', $user->id) }}" class="btn btn-warning" title="VER">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info" title="EDITAR">
+                                    <i class="fas fa-pen"></i>
                                 </a>
                             </td>
                         </tr>

@@ -48,7 +48,7 @@
                 <tbody>
                     @foreach ($pets as $item)
                         <tr>
-                            <td><img width="30px" height="30px" src="{{ $item->photo }}" alt="{{ $item->photo }}"></td>
+                            <td><img width="30px" height="30px" src="{{ $item->photo }}" alt="Foto do Pet"></td>
                             <td>{{ $item->name }}</td>
                             <td>{{ $item->species }}</td>
                             <td>{{ $item->sex }}</td>
@@ -58,19 +58,21 @@
                             <td>{{ $item->secondary_color }}</td>
                             <td>{{ date('d/m/Y', strtotime($item->date_disappearance)) }}</td>
                             <td style="width=10px;">
-                                <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info">
-                                    <i class="fas fa-pen"></i>
-                                </a>
-                                <a href="{{ route('pets.show', $item->id) }}" class="btn btn-warning">
+                                <a href="{{ route('pets.show', $item->id) }}" class="btn btn-warning" title="VER">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
 
+                                <a href="{{ route('pets.edit', $item->id) }}" class="btn btn-info" title="EDITAR">
+                                    <i class="fas fa-pen"></i>
+                                </a>
+
                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#avistado{{ $item->id }}">
+                                    data-bs-target="#avistado{{ $item->id }}" title="AVISTADO">
                                     <i class="fas fa-chart-line"></i>
                                 </button>
 
-                                <a href="{{ route('pets.lost.found', $item->id) }}" class="btn btn-success">
+                                <a href="{{ route('pets.lost.found', $item->id) }}" class="btn btn-success"
+                                    title="ENCONTRADO">
                                     <i class="fas fa-search-location"></i>
                                 </a>
                             </td>

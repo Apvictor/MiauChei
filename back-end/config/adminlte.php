@@ -191,7 +191,7 @@ return [
     'dashboard_url' => 'home',
     'logout_url' => 'logout',
     'login_url' => 'login',
-    'register_url' => 'register',
+    'register_url' => false,
     'password_reset_url' => 'password/reset',
     'password_email_url' => 'password/email',
     'profile_url' => false,
@@ -248,12 +248,11 @@ return [
                     'text' => 'Encontrados',
                     'url'  => 'pets/found',
                 ],
+                [
+                    'text' => 'Avistados',
+                    'url'  => 'sighted',
+                ],
             ],
-        ],
-        [
-            'text' => 'Avistados',
-            'url'  => 'sighted',
-            'icon' => 'fas fa-chart-line',
         ],
         [
             'text' => 'Status',

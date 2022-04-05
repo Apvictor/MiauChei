@@ -17,41 +17,17 @@ class LoginController extends Controller
      *      summary="Login de Usuário",
      *      description="Retorna usuário logado",
      *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
+     *         @OA\MediaType(mediaType="application/json",
      *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="email",
-     *                     type="string"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="password",
-     *                     type="string"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="device_name",
-     *                     type="string"
-     *                 ),
+     *                 @OA\Property(property="email", type="string"),
+     *                 @OA\Property(property="password", type="string"),
+     *                 @OA\Property(property="device_name", type="string"),
      *                 example={"email": "armandinho14.ap@gmail.com", "password": "12345678", "device_name": "Swagger"}
      *             )
      *         )
      *     ),
-     *      @OA\Response(
-     *          response=201,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     *      @OA\Response(
-     *          response=401,
-     *          description="Unauthenticated",
-     *      ),
-     *      @OA\Response(
-     *          response=403,
-     *          description="Forbidden"
-     *      )
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Bad Request"),
      * )
      */
     public function login(Request $request)

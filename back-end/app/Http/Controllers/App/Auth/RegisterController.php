@@ -17,7 +17,7 @@ class RegisterController extends Controller
      *      tags={"Auth"},
      *      path="/register",
      *      summary="Cadastro de Usuários",
-     *      description="Cadastrar usuários na base de dados",
+     *      description="Cadastro de usuários",
      *    @OA\Parameter(
      *          name="name",
      *          in="query",
@@ -57,9 +57,8 @@ class RegisterController extends Controller
      *          required=true, 
      *          @OA\Schema(type="string",),
      *      ),
-     * 
      *      @OA\RequestBody(@OA\MediaType(mediaType="application/json",)),
-     *      @OA\Response(response=201,description="Successful operation",),
+     *      @OA\Response(response=200,description="Successful operation",),
      *      @OA\Response(response=400,description="Bad Request"),
      * )
      */

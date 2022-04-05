@@ -36,7 +36,6 @@ class PetsController extends Controller
      *          description="Bad Request"
      *      ),
      * )
-     *
      */
     public function recents()
     {
@@ -129,7 +128,6 @@ class PetsController extends Controller
      *          description="Bad Request"
      *      ),
      * )
-     *
      */
     public function petsLost()
     {
@@ -206,7 +204,25 @@ class PetsController extends Controller
         return response()->json($petsSighted);
     }
 
-    // Retorno detalhes do pet conforme ID passado
+    /**
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/pets-details/{id}",
+     *      summary="Detalhes do pet",
+     *      description="Retorna detalhes do pet conforme id passado",
+     *      security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         description="ID do pet",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="integer", format="int64")
+     *     ),
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200, description="Successful operation"),
+     *      @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function petsDetails(int $id)
     {
         $dates_differents = new DifferentDates();
@@ -220,6 +236,45 @@ class PetsController extends Controller
         return response()->json($pets);
     }
 
+    /**
+     * @OA\Post(
+     *      tags={"Pets"},
+     *      path="/pets-store",
+     *      summary="Cadastrar pet",
+     *      description="Retorna dados do pet",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="sex", type="string"),
+     *                 @OA\Property(property="species", type="string"),
+     *                 @OA\Property(property="breed", type="string"),
+     *                 @OA\Property(property="size", type="string"),
+     *                 @OA\Property(property="predominant_color", type="string"),
+     *                 @OA\Property(property="secondary_color", type="string"),
+     *                 @OA\Property(property="date_disappearance", type="string"),
+     *                 @OA\Property(property="last_seen", type="string"),
+     *                 @OA\Property(property="photo", type="string"),
+     *                 example={
+     *                      "name": "Thor",
+     *                      "sex": "M",
+     *                      "species": "Cachorro",
+     *                      "breed": "Vira Lata",
+     *                      "size": "Grande",
+     *                      "predominant_color": "Preto",
+     *                      "secondary_color": "Branco",
+     *                      "date_disappearance": "05/04/2022",
+     *                      "last_seen": "Rua teste",
+     *                      "photo": "teste123"
+     *                 }
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function petsStore(Request $request): \Illuminate\Http\JsonResponse
     {
         $validator = Validator::make($request->all(), [
@@ -235,7 +290,7 @@ class PetsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->messages()->all()[0]], 400);
+            return response()->json(['message' => $validator->messages()->all()], 400);
         } else {
             $dados = $request->all();
 
@@ -251,7 +306,7 @@ class PetsController extends Controller
 
         $date = new \DateTime($dados['date_disappearance']);
         $data_format = $date->format('Y-m-d');
-        
+
         $pet = new Pets();
         $pet->name = $dados['name'];
         $pet->species = $dados['species'];
@@ -277,13 +332,30 @@ class PetsController extends Controller
         $pet->sighted()->save($sighted);
 
         return response()->json([
-            'status' => true,
             'message' => 'Cadastro efetuado com sucesso!',
             'pet' => $pet
         ]);
     }
 
-    //Lista de avistamentos do Pet
+    /**
+     * @OA\Get(
+     *      tags={"Pets"},
+     *      path="/pet-sightings/{id}",
+     *      summary="Avistamentos do pet",
+     *      description="Retorna os avistamentos do pet conforme id passado",
+     *      security={{"bearerAuth": {}}},
+     *     @OA\Parameter(
+     *         description="ID do pet",
+     *         in="path",
+     *         name="id",
+     *         required=true,
+     *         @OA\Schema(type="integer", format="int64")
+     *     ),
+     *     @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function petSightings(int $id): \Illuminate\Http\JsonResponse
     {
         $pet = Pets::select('pets.*')->where('pets.id', $id)->get();
@@ -302,6 +374,28 @@ class PetsController extends Controller
         return response()->json($pet);
     }
 
+    /**
+     * @OA\Post(
+     *      tags={"Pets"},
+     *      path="/pets-sighted-store",
+     *      summary="Cadastrar avistamentos",
+     *      description="Retorna dados do avistamento",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\RequestBody(
+     *         @OA\MediaType(mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="data_sighted", type="string"),
+     *                 @OA\Property(property="pet_id", type="string"),
+     *                 @OA\Property(property="last_seen", type="string"),
+     *                 @OA\Property(property="user_pet", type="boolean"),
+     *                 example={"data_sighted": "05/04/2022", "pet_id": "345", "last_seen": "Rua teste", "user_pet": true}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function petsSightedStore(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -312,7 +406,7 @@ class PetsController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->messages()->all()[0]], 400);
+            return response()->json(['error' => $validator->messages()->all()], 400);
         } else {
             $data = $request->all();
             $date = new \DateTime($data['data_sighted']);
@@ -331,7 +425,6 @@ class PetsController extends Controller
             $pet->save();
 
             return response()->json([
-                'status' => true,
                 'message' => 'Cadastro efetuado com sucesso!',
                 'sighted' => $sighted,
                 'pet' => $pet
@@ -339,7 +432,25 @@ class PetsController extends Controller
         }
     }
 
-    // Pet encontrado, atualização do status_id
+    /**
+     * @OA\Put(
+     *      tags={"Pets"},
+     *      path="/pet-found/{id}",
+     *      summary="Pet encontrado",
+     *      description="Atualização do pet para encontrado",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *          description="ID do pet",
+     *          in="path",
+     *          name="id",
+     *          required=true,
+     *          @OA\Schema(type="integer", format="int64")
+     *      ),
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200, description="Successful operation"),
+     *      @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function petFound($id)
     {
         $pet = Pets::findOrFail($id);
@@ -348,7 +459,6 @@ class PetsController extends Controller
         $pet->save();
 
         return response()->json([
-            'status' => true,
             'message' => 'Atualização efetuada com sucesso!',
             'pet' => $pet
         ]);

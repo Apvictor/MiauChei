@@ -6,10 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -20,22 +17,11 @@ class UserController extends Controller
      *      summary="Perfil do Usuário",
      *      description="Retorno do perfil do Usuário",
      *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     * )
      * 
-     * @return user
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200, description="Successful operation"),
+     *      @OA\Response(response=400, description="Bad Request"),
+     * )
      */
     public function getProfile()
     {
@@ -44,6 +30,27 @@ class UserController extends Controller
         return response()->json($user);
     }
 
+    /**
+     * @OA\Post(
+     *      tags={"Usuário"},
+     *      path="/profile",
+     *      summary="Atualização do Perfil",
+     *      description="Retorna dados atualizados",
+     *      @OA\RequestBody(
+     *         @OA\MediaType(mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(property="name", type="string"),
+     *                 @OA\Property(property="phone", type="string"),
+     *                 @OA\Property(property="password", type="string"),
+     *                 @OA\Property(property="photo", type="string", format="byte"),
+     *                 example={"name": "Armando", "phone": "999999999", "password": "12345678", "photo": "U3dhZ2dlciByb2Nrcw=="}
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=400, description="Bad Request"),
+     * )
+     */
     public function postProfile(Request $request)
     {
         $dados = $request->all();

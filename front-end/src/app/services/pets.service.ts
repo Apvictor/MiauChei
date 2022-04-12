@@ -122,8 +122,8 @@ export class PetsService {
   }
 
   /**
- * Cadastro de avistamentos
- */
+  * Pet encontrado
+  */
   petFound(id, data = null) {
     return new Promise((resolve, reject) => {
       this.api.put('/pet-found/' + id, data).subscribe((res: any) => {

@@ -29,8 +29,9 @@ class LoginController extends Controller
      *     @OA\Response(response=200, description="Successful operation"),
      *     @OA\Response(response=400, description="Bad Request"),
      * )
+     * @throws ValidationException
      */
-    public function login(Request $request)
+    public function login(Request $request): array
     {
         $request->validate([
             'email' => 'required|email',
@@ -38,9 +39,9 @@ class LoginController extends Controller
             'device_name' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->get('email'))->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!$user || !Hash::check($request->get('password'), $user->password)) {
             throw ValidationException::withMessages([
                 'email' => ['The provided credentials are incorrect.'],
             ]);
@@ -48,9 +49,9 @@ class LoginController extends Controller
 
         $response = [
             'status' => true,
+            'authorization' => $user->createToken($request->get('device_name'))->plainTextToken,
             'message' => 'Login efetuado com sucesso!',
-            'user' => $user,
-            'authorization' => $user->createToken($request->device_name)->plainTextToken
+            'user' => $user
         ];
 
         return $response;

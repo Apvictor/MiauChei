@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -30,7 +31,7 @@ class RegisterController extends Controller
      *          name="email",
      *          in="query",
      *          description="Email do usuário",
-     *          required=true, 
+     *          required=true,
      *          example="teste@gmail.com",
      *          @OA\Schema(type="string",),
      *      ),
@@ -38,7 +39,7 @@ class RegisterController extends Controller
      *          name="password",
      *          in="query",
      *          description="Senha do usuário",
-     *          required=true, 
+     *          required=true,
      *          example=12345678,
      *          @OA\Schema(type="string",),
      *      ),
@@ -46,7 +47,7 @@ class RegisterController extends Controller
      *          name="phone",
      *          in="query",
      *          description="Telefone do usuário",
-     *          required=true, 
+     *          required=true,
      *          example=11995052373,
      *          @OA\Schema(type="string",),
      *      ),
@@ -54,7 +55,7 @@ class RegisterController extends Controller
      *          name="photo",
      *          in="query",
      *          description="Foto do usuário",
-     *          required=true, 
+     *          required=true,
      *          @OA\Schema(type="string",),
      *      ),
      *      @OA\RequestBody(@OA\MediaType(mediaType="application/json",)),
@@ -62,7 +63,7 @@ class RegisterController extends Controller
      *      @OA\Response(response=400,description="Bad Request"),
      * )
      */
-    public function register(Request $request)
+    public function register(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\App;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,13 +18,13 @@ class UserController extends Controller
      *      summary="Perfil do Usuário",
      *      description="Retorno do perfil do Usuário",
      *      security={{"bearerAuth": {}}},
-     * 
+     *
      *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
      *      @OA\Response(response=200, description="Successful operation"),
      *      @OA\Response(response=400, description="Bad Request"),
      * )
      */
-    public function getProfile()
+    public function getProfile(): JsonResponse
     {
         $user = Auth::user();
 
@@ -51,7 +52,7 @@ class UserController extends Controller
      *     @OA\Response(response=400, description="Bad Request"),
      * )
      */
-    public function postProfile(Request $request)
+    public function postProfile(Request $request): JsonResponse
     {
         $dados = $request->all();
 

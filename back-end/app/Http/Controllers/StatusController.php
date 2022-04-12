@@ -3,11 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Status;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class StatusController extends Controller
 {
+    /**
+     * Lista de status
+     *
+     * @return View|Factory
+     */
     public function index()
     {
         $status = Status::paginate(10);
@@ -15,33 +23,56 @@ class StatusController extends Controller
         return view('admin.pages.status.index', ['status' => $status]);
     }
 
+    /**
+     * Retorna formulário de criação
+     *
+     * @return View|Factory
+     */
     public function create()
     {
         return view('admin.pages.status.create');
     }
 
-    public function show($id)
+    /**
+     * Retorna detalhes do status
+     *
+     * @param integer $id
+     * @return View|Factory
+     */
+    public function show(int $id)
     {
         $status = Status::findOrFail($id);
 
         return view('admin.pages.status.show', compact('status'));
     }
 
-    public function edit($id)
+    /**
+     * Retorna formulário de edição
+     *
+     * @param integer $id
+     * @return View|Factory
+     */
+    public function edit(int $id)
     {
         $status = Status::findOrFail($id);
 
         return view('admin.pages.status.edit', compact('status'));
     }
 
-    public function store(Request $request)
+    /**
+     * Criação de status
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
-        $validator  = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => ['required'],
         ]);
 
         if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->with('toast_error', $validator->messages()->all())->withInput();
         }
 
         $dados = $request->all();
@@ -51,14 +82,21 @@ class StatusController extends Controller
         return redirect()->route('status.index')->with('toast_success', 'Cadastrado com sucesso!');
     }
 
-    public function update(Request $request, $id)
+    /**
+     * Edição de status
+     *
+     * @param Request $request
+     * @param integer $id
+     * @return RedirectResponse
+     */
+    public function update(Request $request, int $id): RedirectResponse
     {
-        $validator  = Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'name' => ['required'],
         ]);
 
         if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->with('toast_error', $validator->messages()->all())->withInput();
         }
 
         $dados = $request->all();
@@ -70,7 +108,13 @@ class StatusController extends Controller
         return redirect()->route('status.index')->with('toast_success', 'Atualizado com sucesso!');
     }
 
-    public function destroy($id)
+    /**
+     * Deletar status
+     *
+     * @param integer $id
+     * @return RedirectResponse
+     */
+    public function destroy(int $id): RedirectResponse
     {
         $status = Status::findOrFail($id);
 
@@ -79,11 +123,17 @@ class StatusController extends Controller
         return redirect()->route('status.index')->with('toast_success', 'Deletado com sucesso!');
     }
 
+    /**
+     * Buscar status
+     *
+     * @param Request $request
+     * @return View|Factory
+     */
     public function search(Request $request)
     {
-        $filters = $request->only('filter');
+        $request->only('filter');
 
-        $status = Status::where('name', 'LIKE', "%{$request->filter}%")
+        $status = Status::where('name', 'LIKE', "%$request->filter%")
             ->latest()
             ->paginate();
 

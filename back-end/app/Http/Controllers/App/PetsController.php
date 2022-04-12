@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
 use Carbon\Carbon;
+use DateTime;
+use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -37,7 +40,7 @@ class PetsController extends Controller
      *      ),
      * )
      */
-    public function recents()
+    public function recents(): JsonResponse
     {
         $dates_differents = new DifferentDates();
 
@@ -83,14 +86,12 @@ class PetsController extends Controller
      * )
      *
      */
-    public function myPets(): \Illuminate\Http\JsonResponse
+    public function myPets(): JsonResponse
     {
-        $user = Auth::user();
-
         $myPets = Pets::join('users', 'pets.user_id', '=', 'users.id')
             ->join('status', 'pets.status_id', '=', 'status.id')
             ->select('pets.*', 'status.name as status')
-            ->where('users.id', $user->id)
+            ->where('users.id', Auth::user()->id)
             ->orderBy('pets.date_disappearance', 'DESC')
             ->get();
 
@@ -129,7 +130,7 @@ class PetsController extends Controller
      *      ),
      * )
      */
-    public function petsLost()
+    public function petsLost(): JsonResponse
     {
         $dates_differents = new DifferentDates();
 
@@ -173,7 +174,7 @@ class PetsController extends Controller
      * )
      *
      */
-    public function petsSighted()
+    public function petsSighted(): JsonResponse
     {
         $dates_differents = new DifferentDates();
 
@@ -223,7 +224,7 @@ class PetsController extends Controller
      *      @OA\Response(response=400, description="Bad Request"),
      * )
      */
-    public function petsDetails(int $id)
+    public function petsDetails(int $id): JsonResponse
     {
         $dates_differents = new DifferentDates();
 
@@ -274,8 +275,9 @@ class PetsController extends Controller
      *     @OA\Response(response=200, description="Successful operation"),
      *     @OA\Response(response=400, description="Bad Request"),
      * )
+     * @throws Exception
      */
-    public function petsStore(Request $request): \Illuminate\Http\JsonResponse
+    public function petsStore(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
@@ -304,7 +306,7 @@ class PetsController extends Controller
             $dados['photo'] = $url;
         }
 
-        $date = new \DateTime($dados['date_disappearance']);
+        $date = new DateTime($dados['date_disappearance']);
         $data_format = $date->format('Y-m-d');
 
         $pet = new Pets();
@@ -356,7 +358,7 @@ class PetsController extends Controller
      *     @OA\Response(response=400, description="Bad Request"),
      * )
      */
-    public function petSightings(int $id): \Illuminate\Http\JsonResponse
+    public function petSightings(int $id): JsonResponse
     {
         $pet = Pets::select('pets.*')->where('pets.id', $id)->get();
 
@@ -395,8 +397,9 @@ class PetsController extends Controller
      *     @OA\Response(response=200, description="Successful operation"),
      *     @OA\Response(response=400, description="Bad Request"),
      * )
+     * @throws Exception
      */
-    public function petsSightedStore(Request $request)
+    public function petsSightedStore(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
             'data_sighted' => ['required'],
@@ -409,7 +412,7 @@ class PetsController extends Controller
             return response()->json(['error' => $validator->messages()->all()], 400);
         } else {
             $data = $request->all();
-            $date = new \DateTime($data['data_sighted']);
+            $date = new DateTime($data['data_sighted']);
             $data_format = $date->format('Y-m-d');
 
             $sighted = Sighted::create([
@@ -451,7 +454,7 @@ class PetsController extends Controller
      *      @OA\Response(response=400, description="Bad Request"),
      * )
      */
-    public function petFound($id)
+    public function petFound($id): JsonResponse
     {
         $pet = Pets::findOrFail($id);
         $pet->status_id = 2;

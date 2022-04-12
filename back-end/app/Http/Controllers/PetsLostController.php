@@ -2,17 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\Pets;
 use App\Models\Sighted;
+use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Laravel\SerializableClosure\Serializers\Signed;
 
 class PetsLostController extends Controller
 {
+    /**
+     * Lista de pets perdidos
+     *
+     * @return View|Factory
+     */
     public function lostIndex()
     {
         $pets = Pets::where('status_id', 1)->orderBy('updated_at', 'DESC')->paginate(5);
@@ -20,12 +28,23 @@ class PetsLostController extends Controller
         return view('admin.pages.pets.pets_lost.index', compact('pets'));
     }
 
+    /**
+     * Formulário de criação de pet
+     *
+     * @return View|Factory
+     */
     public function lostCreate()
     {
         return view('admin.pages.pets.pets_lost.create');
     }
 
-    public function lostStore(Request $request)
+    /**
+     * Criação de pet
+     *
+     * @param Request $request
+     * @return Redirector|RedirectResponse
+     */
+    public function lostStore(Request $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required'],
@@ -41,7 +60,7 @@ class PetsLostController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            return back()->with('toast_error', $validator->messages()->all())->withInput();
         }
 
         $dados = $request->all();
@@ -92,12 +111,18 @@ class PetsLostController extends Controller
         return redirect()->route('pets.lost.index')->with('toast_success', 'Cadastrado com sucesso!');
     }
 
+    /**
+     * Buscar pet
+     *
+     * @param Request $request
+     * @return View|Factory
+     */
     public function lostSearch(Request $request)
     {
-        $filters = $request->only('filter');
+        $request->only('filter');
 
         $pets = Pets::where('status_id', 1)
-            ->where('name', 'LIKE', "%{$request->filter}%")
+            ->where('name', 'LIKE', "%$request->filter%")
             ->orWhere('breed', $request->filter)
             ->latest()
             ->paginate();
@@ -105,7 +130,13 @@ class PetsLostController extends Controller
         return view('admin.pages.pets.pets_lost.index', compact('pets'));
     }
 
-    public function foundPet($id)
+    /**
+     * Atualizar pet para encontrado
+     *
+     * @param integer $id
+     * @return RedirectResponse
+     */
+    public function foundPet(int $id): RedirectResponse
     {
         $pet = Pets::FindOrFail($id);
 

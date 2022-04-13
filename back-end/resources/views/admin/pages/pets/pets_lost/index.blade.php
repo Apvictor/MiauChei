@@ -66,8 +66,8 @@
                                     <i class="fas fa-pen"></i>
                                 </a>
 
-                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                    data-bs-target="#avistado{{ $item->id }}" title="AVISTADO">
+                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#avistado{{ $item->id }}" title="AVISTADO">
                                     <i class="fas fa-chart-line"></i>
                                 </button>
 
@@ -94,7 +94,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Pet avistado</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ route('sighted.store') }}" method="post">
                         @csrf

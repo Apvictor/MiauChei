@@ -19,7 +19,11 @@
   <div class="container" *ngIf="pet.status_id == '1'">
     <div class="title" style="background: #FFFF00;">
       <p class="name">{{pet.name}}</p>
-      <p class="endereco">{{sighted.last_seen}}, há {{time.dias}}</p>
+      <p class="endereco">{{sighted.last_seen}}, há
+        {{time.anos ? time.anos : ''}}
+        {{time.meses ? time.meses : ''}}
+        {{time.dias ? time.dias : ''}}
+      </p>
     </div>
     <div class="dados">
       <p class="text">Espécie</p>
@@ -36,14 +40,22 @@
       <p class="text">Avistado em</p>
       <p class="text-value">{{pet.date_disappearance}}</p>
       <p class="text">Visto por último em</p>
-      <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
+      <p class="text-value">{{sighted.last_seen}}, há
+        {{time.anos ? time.anos : ''}}
+        {{time.meses ? time.meses : ''}}
+        {{time.dias ? time.dias : ''}}
+      </p>
     </div>
   </div>
 
   <div class="container" *ngIf="pet.status_id == '3'">
     <div class="title">
       <p class="name">{{pet.name}}</p>
-      <p class="endereco">{{sighted.last_seen}}, há {{time.dias}}</p>
+      <p class="endereco">{{sighted.last_seen}}, há
+        {{time.anos ? time.anos : ''}}
+        {{time.meses ? time.meses : ''}}
+        {{time.dias ? time.dias : ''}}
+      </p>
     </div>
     <div class="dados">
       <p class="text">Espécie</p>
@@ -59,7 +71,11 @@
       <p class="text">Avistado em</p>
       <p class="text-value">{{pet.date_disappearance}}</p>
       <p class="text">Visto por último em</p>
-      <p class="text-value">{{sighted.last_seen}}, há {{time.dias}}</p>
+      <p class="text-value">{{sighted.last_seen}}, há
+        {{time.anos ? time.anos : ''}}
+        {{time.meses ? time.meses : ''}}
+        {{time.dias ? time.dias : ''}}
+      </p>
       <a style="text-decoration: none;" href="tel:{{user.phone}}" *ngIf="sighted.user_pet == true">
         <ion-chip>
           <ion-avatar>

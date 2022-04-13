@@ -56,6 +56,8 @@ export class PetsDetailsPage implements OnInit {
         this.pet.user_id = pets['user_id'];
 
         this.time.dias = pets['times']['dias']
+        this.time.meses = pets['times']['meses']
+        this.time.anos = pets['times']['anos']
 
         this.sighted.last_seen = pets['sighted']['last_seen']
         this.sighted.data_sighted = pets['sighted']['data_sighted']

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -57,11 +58,12 @@ class UserController extends Controller
         $dados = $request->all();
 
         $user = User::findOrFail(Auth::user()->id);
+        $dados['uuid'] = Str::uuid();
 
         if (isset($dados['photo'])) {
             $data = explode(',', $dados['photo']);
             $folder = 'users/';
-            $name = $folder . $user->uuid . '.jpg';
+            $name = $folder . $dados['uuid'] . '.jpg';
             Storage::disk('s3')->put($name, base64_decode($data[0]));
             $url = Storage::disk('s3')->url($name);
             $dados['photo'] = $url;

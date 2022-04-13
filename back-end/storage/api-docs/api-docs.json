@@ -572,8 +572,5 @@
                 "scheme": "bearer"
             }
         }
-    },
-    "security": [
-        []
-    ]
+    }
 }

@@ -18,6 +18,13 @@ use Illuminate\Support\Str;
 
 class PetsController extends Controller
 {
+    private $dates_differents;
+
+    public function __construct(DifferentDates $differentDates)
+    {
+        $this->dates_differents = $differentDates;
+    }
+
     /**
      * @OA\Get(
      *      tags={"Pets"},
@@ -42,8 +49,6 @@ class PetsController extends Controller
      */
     public function recents(): JsonResponse
     {
-        $dates_differents = new DifferentDates();
-
         $recentPets = Pets::select('*')
             ->where('status_id', 1)
             ->OrWhere('status_id', 3)
@@ -52,11 +57,15 @@ class PetsController extends Controller
             ->get();
 
         for ($i = 0; $i < count($recentPets); $i++) {
-            $recentPets[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $recentPets[$i]->id)->latest()->first();
-            $recentPets[$i]->times = $dates_differents->dateFormat($recentPets[$i]->created_at);
+            $recentPets[$i]->sighted = Sighted::select('last_seen', 'data_sighted')
+                ->where('pet_id', $recentPets[$i]->id)
+                ->orderBy('created_at', 'DESC')
+                ->first();
+
+            $recentPets[$i]->times = $this->dates_differents->dateFormat($recentPets[$i]->created_at);
         }
 
-        if (count($recentPets) <= 0) {
+        if (count($recentPets) == 0) {
             return response()->json(['message' => 'Sem registros']);
         }
 
@@ -92,7 +101,7 @@ class PetsController extends Controller
             ->join('status', 'pets.status_id', '=', 'status.id')
             ->select('pets.*', 'status.name as status')
             ->where('users.id', Auth::user()->id)
-            ->orderBy('pets.date_disappearance', 'DESC')
+            ->orderBy('pets.date_disappearance', 'ASC')
             ->get();
 
         $result = [];
@@ -132,8 +141,6 @@ class PetsController extends Controller
      */
     public function petsLost(): JsonResponse
     {
-        $dates_differents = new DifferentDates();
-
         $petsLost = Pets::select('*')
             ->where('status_id', 1)
             ->orderBy('created_at', 'DESC')
@@ -141,7 +148,7 @@ class PetsController extends Controller
 
         for ($i = 0; $i < count($petsLost); $i++) {
             $petsLost[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsLost[$i]->id)->latest()->first();
-            $petsLost[$i]->times = $dates_differents->dateFormat($petsLost[$i]->created_at);
+            $petsLost[$i]->times = $this->dates_differents->dateFormat($petsLost[$i]->created_at);
         }
 
         if (count($petsLost) <= 0) {
@@ -176,8 +183,6 @@ class PetsController extends Controller
      */
     public function petsSighted(): JsonResponse
     {
-        $dates_differents = new DifferentDates();
-
         $petsSighted = Pets::join('users', 'pets.user_id', '=', 'users.id')
             ->join('status', 'pets.status_id', '=', 'status.id')
             ->select(
@@ -196,7 +201,7 @@ class PetsController extends Controller
             $lists[$i]['count'] = Sighted::where('pet_id', $lists[$i]->id)->count();
             $lists[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsSighted[$i]->id)->latest()->first();
 
-            $lists[$i]->times = $dates_differents->dateFormat($petsSighted[$i]->created_at);
+            $lists[$i]->times = $this->dates_differents->dateFormat($petsSighted[$i]->created_at);
             if ($lists[$i]['count'] > 0) {
                 $list[$i] = $lists[$i];
             }
@@ -226,12 +231,16 @@ class PetsController extends Controller
      */
     public function petsDetails(int $id): JsonResponse
     {
-        $dates_differents = new DifferentDates();
-
         $pets = Pets::findOrFail($id);
 
-        $pets->sighted = Sighted::select('last_seen', 'data_sighted', 'user_pet')->where('pet_id', $pets->id)->latest()->first();
-        $pets->times = $dates_differents->dateFormat($pets->created_at);
+        $dateFormat = date_create($pets->date_disappearance);
+
+        $pets->date_disappearance = date_format($dateFormat, 'd/m/Y');
+        $pets->sighted = Sighted::select('last_seen', 'data_sighted', 'user_pet')
+            ->where('pet_id', $pets->id)
+            ->orderBy('created_at', 'DESC')
+            ->first();
+        $pets->times = $this->dates_differents->dateFormat($pets->created_at);
         $pets->user = Auth::user();
 
         return response()->json($pets);
@@ -363,7 +372,7 @@ class PetsController extends Controller
         $pet = Pets::select('pets.*')->where('pets.id', $id)->get();
 
         for ($i = 0; $i < count($pet); $i++) {
-            $dateFormat = date_create($pet[$i]->created_at);
+            $dateFormat = date_create($pet[$i]->date_disappearance);
             $pet[$i]->publicado = date_format($dateFormat, 'd/m/Y');
             $pet[$i]->sighted = Sighted::join('users', 'sighted.user_id', '=', 'users.id')->select('sighted.*', 'users.name as dono')->where('sighted.pet_id', $pet[$i]->id)->get();
 

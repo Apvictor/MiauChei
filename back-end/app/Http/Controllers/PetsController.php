@@ -8,6 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class PetsController extends Controller
@@ -47,6 +48,23 @@ class PetsController extends Controller
      */
     public function update(Request $request, int $id): RedirectResponse
     {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'sex' => ['required'],
+            'photo' => ['required', 'mimes:jpg,png,jpeg'],
+            'species' => ['required'],
+            'breed' => ['required'],
+            'size' => ['required'],
+            'predominant_color' => ['required'],
+            'secondary_color' => ['required'],
+            'date_disappearance' => ['required'],
+            'last_seen' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return back()->with('toast_error', $validator->messages()->all())->withInput();
+        }
+        
         $dados = $request->all();
 
         $pet = Pets::findOrFail($id);

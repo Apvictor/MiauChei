@@ -6,7 +6,6 @@ use App\Helpers\DifferentDates;
 use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
-use Carbon\Carbon;
 use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -32,19 +31,9 @@ class PetsController extends Controller
      *      summary="Pets recente",
      *      description="Retorno de pets cadastrados recentemente",
      *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200,description="Successful operation",),
+     *      @OA\Response(response=400,description="Bad Request"),
      * )
      */
     public function recents(): JsonResponse
@@ -79,21 +68,10 @@ class PetsController extends Controller
      *      summary="Meus Pets",
      *      description="Retorno dos pets cadastrados pelo usuário logado",
      *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200,description="Successful operation"),
+     *      @OA\Response(response=400,description="Bad Request"),
      * )
-     *
      */
     public function myPets(): JsonResponse
     {
@@ -124,19 +102,9 @@ class PetsController extends Controller
      *      summary="Pets perdidos",
      *      description="Retorna lista de pets perdidos",
      *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
+     *      @OA\Response(response=200,description="Successful operation"),
+     *      @OA\Response(response=400,description="Bad Request"),
      * )
      */
     public function petsLost(): JsonResponse
@@ -156,58 +124,6 @@ class PetsController extends Controller
         }
 
         return response()->json($petsLost);
-    }
-
-    /**
-     * @OA\Get(
-     *      tags={"Pets"},
-     *      path="/pets-sighted",
-     *      summary="Pets avistados",
-     *      description="Retorna lista de pets avistados",
-     *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *         )
-     *     ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="Successful operation",
-     *       ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request"
-     *      ),
-     * )
-     *
-     */
-    public function petsSighted(): JsonResponse
-    {
-        $petsSighted = Pets::join('users', 'pets.user_id', '=', 'users.id')
-            ->join('status', 'pets.status_id', '=', 'status.id')
-            ->select(
-                'users.name as dono',
-                'pets.*',
-                'status.name as status',
-            )
-            ->where('status_id', 3)
-            ->orderBy('date_disappearance', 'DESC')
-            ->get();
-
-        $lists = [];
-        $list = [];
-        for ($i = 0; $i < count($petsSighted); $i++) {
-            $lists[$i] = $petsSighted[$i];
-            $lists[$i]['count'] = Sighted::where('pet_id', $lists[$i]->id)->count();
-            $lists[$i]->sighted = Sighted::select('last_seen', 'data_sighted')->where('pet_id', $petsSighted[$i]->id)->latest()->first();
-
-            $lists[$i]->times = $this->dates_differents->dateFormat($petsSighted[$i]->created_at);
-            if ($lists[$i]['count'] > 0) {
-                $list[$i] = $lists[$i];
-            }
-        }
-
-        return response()->json($petsSighted);
     }
 
     /**
@@ -266,18 +182,7 @@ class PetsController extends Controller
      *                 @OA\Property(property="date_disappearance", type="string"),
      *                 @OA\Property(property="last_seen", type="string"),
      *                 @OA\Property(property="photo", type="string"),
-     *                 example={
-     *                      "name": "Thor",
-     *                      "sex": "M",
-     *                      "species": "Cachorro",
-     *                      "breed": "Vira Lata",
-     *                      "size": "Grande",
-     *                      "predominant_color": "Preto",
-     *                      "secondary_color": "Branco",
-     *                      "date_disappearance": "05/04/2022",
-     *                      "last_seen": "Rua teste",
-     *                      "photo": "teste123"
-     *                 }
+     *                 example={"name": "Thor", "sex": "M", "species": "Cachorro", "breed": "Vira Lata", "size": "Grande", "predominant_color": "Preto", "secondary_color": "Branco", "date_disappearance": "05/04/2022", "last_seen": "Rua teste", "photo": "teste123"}
      *             )
      *         )
      *     ),
@@ -342,137 +247,6 @@ class PetsController extends Controller
 
         $pet->sighted()->save($sighted);
 
-        return response()->json([
-            'message' => 'Cadastro efetuado com sucesso!',
-            'pet' => $pet
-        ]);
-    }
-
-    /**
-     * @OA\Get(
-     *      tags={"Pets"},
-     *      path="/pet-sightings/{id}",
-     *      summary="Avistamentos do pet",
-     *      description="Retorna os avistamentos do pet conforme id passado",
-     *      security={{"bearerAuth": {}}},
-     *     @OA\Parameter(
-     *         description="ID do pet",
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="integer", format="int64")
-     *     ),
-     *     @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=400, description="Bad Request"),
-     * )
-     */
-    public function petSightings(int $id): JsonResponse
-    {
-        $pet = Pets::select('pets.*')->where('pets.id', $id)->get();
-
-        for ($i = 0; $i < count($pet); $i++) {
-            $dateFormat = date_create($pet[$i]->date_disappearance);
-            $pet[$i]->publicado = date_format($dateFormat, 'd/m/Y');
-            $pet[$i]->sighted = Sighted::join('users', 'sighted.user_id', '=', 'users.id')->select('sighted.*', 'users.name as dono')->where('sighted.pet_id', $pet[$i]->id)->get();
-
-            for ($y = 0; $y < count($pet[$i]->sighted); $y++) {
-                $dateFormat = date_create($pet[$i]->sighted[$y]->data_sighted);
-                $pet[$i]->sighted[$y]['data_perdido'] = date_format($dateFormat, 'd/m/Y');
-            }
-        }
-
-        return response()->json($pet);
-    }
-
-    /**
-     * @OA\Post(
-     *      tags={"Pets"},
-     *      path="/pets-sighted-store",
-     *      summary="Cadastrar avistamentos",
-     *      description="Retorna dados do avistamento",
-     *      security={{"bearerAuth": {}}},
-     *      @OA\RequestBody(
-     *         @OA\MediaType(mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(property="data_sighted", type="string"),
-     *                 @OA\Property(property="pet_id", type="string"),
-     *                 @OA\Property(property="last_seen", type="string"),
-     *                 @OA\Property(property="user_pet", type="boolean"),
-     *                 example={"data_sighted": "05/04/2022", "pet_id": "345", "last_seen": "Rua teste", "user_pet": true}
-     *             )
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=400, description="Bad Request"),
-     * )
-     * @throws Exception
-     */
-    public function petsSightedStore(Request $request): JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'data_sighted' => ['required'],
-            'pet_id' => ['required'],
-            'last_seen' => ['required'],
-            'user_pet' => ['required'],
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->messages()->all()], 400);
-        } else {
-            $data = $request->all();
-            $date = new DateTime($data['data_sighted']);
-            $data_format = $date->format('Y-m-d');
-
-            $sighted = Sighted::create([
-                'user_id' => Auth::user()->id,
-                'pet_id' => $data['pet_id'],
-                'data_sighted' => $data_format,
-                'last_seen' => $data['last_seen'],
-                'user_pet' => $data['user_pet']
-            ]);
-
-            $pet = Pets::findOrFail($data['pet_id']);
-            $pet->status_id = 3;
-            $pet->save();
-
-            return response()->json([
-                'message' => 'Cadastro efetuado com sucesso!',
-                'sighted' => $sighted,
-                'pet' => $pet
-            ]);
-        }
-    }
-
-    /**
-     * @OA\Put(
-     *      tags={"Pets"},
-     *      path="/pet-found/{id}",
-     *      summary="Pet encontrado",
-     *      description="Atualização do pet para encontrado",
-     *      security={{"bearerAuth": {}}},
-     *      @OA\Parameter(
-     *          description="ID do pet",
-     *          in="path",
-     *          name="id",
-     *          required=true,
-     *          @OA\Schema(type="integer", format="int64")
-     *      ),
-     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
-     *      @OA\Response(response=200, description="Successful operation"),
-     *      @OA\Response(response=400, description="Bad Request"),
-     * )
-     */
-    public function petFound($id): JsonResponse
-    {
-        $pet = Pets::findOrFail($id);
-        $pet->status_id = 2;
-        $pet->date_disappearance = Carbon::now()->format('Y-m-d');
-        $pet->save();
-
-        return response()->json([
-            'message' => 'Atualização efetuada com sucesso!',
-            'pet' => $pet
-        ]);
+        return response()->json(['success' => 'Cadastro efetuado com sucesso!']);
     }
 }

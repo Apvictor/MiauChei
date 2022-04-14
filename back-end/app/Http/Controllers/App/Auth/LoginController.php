@@ -50,7 +50,7 @@ class LoginController extends Controller
         $response = [
             'status' => true,
             'authorization' => $user->createToken($request->get('device_name'))->plainTextToken,
-            'message' => 'Login efetuado com sucesso!',
+            'success' => 'Login efetuado com sucesso!',
             'user' => $user
         ];
 

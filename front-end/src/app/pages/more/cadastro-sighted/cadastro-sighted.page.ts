@@ -47,7 +47,8 @@ export class CadastroSightedPage implements OnInit {
 
     try {
       this.petsService.petsSightedStore(this.sighted)
-        .then(() => {
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
           this.nav.back();
         })
         .catch(err => {

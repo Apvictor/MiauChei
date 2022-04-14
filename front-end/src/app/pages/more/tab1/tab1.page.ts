@@ -1,3 +1,4 @@
+import { AlertService } from './../../../components/alert.service';
 import { LoadingService } from './../../../components/loading.service';
 import { PetsService } from './../../../services/pets.service';
 import { Component } from '@angular/core';
@@ -16,11 +17,15 @@ export class Tab1Page {
   constructor(
     private pets: PetsService,
     private loading: LoadingService,
+    private alert: AlertService,
   ) { }
 
   ngOnInit() {
     this.getNameUser();
+    this.recentsPets();
+  }
 
+  ionViewCanEnter() {
     this.recentsPets();
   }
 
@@ -29,13 +34,17 @@ export class Tab1Page {
     this.nameUser = name.value;
   }
 
-  async recentsPets() {
+  recentsPets() {
     this.loading.presentLoading();
     try {
-      this.pets.recents().then((pets) => {
-        this.loading.dismissLoading();
-        this.animais = pets;
-      })
+      this.pets.recents()
+        .then((res) => {
+          this.animais = res;
+        }).catch((err) => {
+          this.alert.showAlertError(err);
+        }).finally(() => {
+          this.loading.dismissLoading();
+        })
     } catch (err) {
       console.log("erro " + err)
     }

@@ -11,9 +11,7 @@ export class ApiService {
   urlCep = environment.cep_url
   token = window.localStorage.getItem('CapacitorStorage.access-token');
 
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) { }
 
   post(serviceName, data) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)

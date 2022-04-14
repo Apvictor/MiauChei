@@ -1,3 +1,4 @@
+import { AlertService } from './../../../components/alert.service';
 import { ConfirmacaoPage } from './../../../modals/confirmacao/confirmacao.page';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from './../../../services/auth.service';
@@ -30,6 +31,7 @@ export class CadastroFotoPage implements OnInit {
     private route: ActivatedRoute,
     private nav: NavController,
     private modal: ModalController,
+    private alert: AlertService
   ) { }
 
   ngOnInit() {
@@ -52,9 +54,13 @@ export class CadastroFotoPage implements OnInit {
     this.showModal();
 
     try {
-      this.auth.cadastro(this.user).then(() => {
-        this.nav.navigateForward('login');
-      })
+      this.auth.cadastro(this.user)
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
+          this.nav.navigateForward('login');
+        }).catch((err) => {
+          this.alert.showAlertError(err);
+        })
     } catch (err) {
       console.log("erro " + err)
     }

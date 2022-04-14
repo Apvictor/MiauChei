@@ -6,14 +6,22 @@ import { ToastController } from '@ionic/angular';
 })
 export class AlertService {
 
-  constructor(
-    private toast: ToastController
-  ) { }
+  constructor(private toast: ToastController) { }
 
   async showAlertError(err) {
     const toast = await this.toast.create({
       message: err.error.message,
       color: "danger",
+      position: "top",
+      duration: 2000
+    });
+    toast.present();
+  }
+
+  async showAlertSuccess(msg) {
+    const toast = await this.toast.create({
+      message: msg,
+      color: "success",
       position: "top",
       duration: 2000
     });

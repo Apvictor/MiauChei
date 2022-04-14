@@ -8,6 +8,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -18,7 +20,6 @@ class UserController extends Controller
      *      summary="Perfil do Usuário",
      *      description="Retorno do perfil do Usuário",
      *      security={{"bearerAuth": {}}},
-     *
      *      @OA\RequestBody(@OA\MediaType(mediaType="application/json")),
      *      @OA\Response(response=200, description="Successful operation"),
      *      @OA\Response(response=400, description="Bad Request"),
@@ -37,8 +38,7 @@ class UserController extends Controller
      *      path="/profile",
      *      summary="Atualização do Perfil",
      *      description="Retorna dados atualizados",
-     *      @OA\RequestBody(
-     *         @OA\MediaType(mediaType="application/json",
+     *      @OA\RequestBody(@OA\MediaType(mediaType="application/json",
      *             @OA\Schema(
      *                 @OA\Property(property="name", type="string"),
      *                 @OA\Property(property="phone", type="string"),
@@ -54,24 +54,50 @@ class UserController extends Controller
      */
     public function postProfile(Request $request): JsonResponse
     {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'photo' => ['string'],
+            'phone' => ['required'],
+            'email' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->messages()->all()], 400);
+        }
+
         $dados = $request->all();
 
         $user = User::findOrFail(Auth::user()->id);
+        $dados['uuid'] = Str::uuid();
 
-        if (isset($dados['photo'])) {
+        $new_photo = explode(':', $dados['photo']);
+
+        if (isset($dados['photo']) && $new_photo[0] != 'https') {
             $data = explode(',', $dados['photo']);
             $folder = 'users/';
-            $name = $folder . $user->uuid . '.jpg';
+            $name = $folder . $dados['uuid'] . '.jpg';
             Storage::disk('s3')->put($name, base64_decode($data[0]));
             $url = Storage::disk('s3')->url($name);
             $dados['photo'] = $url;
+
+            $user->update($dados);
+        } else {
+            $user->update([
+                'name' => $dados['name'],
+                'email' => $dados['email'],
+                'phone' => $dados['phone'],
+                'photo' => $user->photo
+            ]);
         }
 
-        $user->update($dados);
+        return response()->json(['success' => 'Usuário atualizado com sucesso!']);
+    }
 
-        return response()->json([
-            'message' => 'Usuário atualizado com sucesso!',
-            'user' => $user
-        ]);
+    // TODO Swagger
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['success' => 'Usuário deslogado com sucesso!']);
     }
 }

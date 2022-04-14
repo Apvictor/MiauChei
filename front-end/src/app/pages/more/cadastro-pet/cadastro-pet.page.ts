@@ -66,7 +66,8 @@ export class CadastroPetPage implements OnInit {
 
     try {
       this.pets.petsStore(data[0])
-        .then(() => {
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
           this.nav.back();
         })
         .catch(err => {
@@ -79,7 +80,6 @@ export class CadastroPetPage implements OnInit {
 
   async takePicture() {
     this.photos = []
-
     try {
       const profilePicture = await Camera.getPhoto({
         quality: 90,

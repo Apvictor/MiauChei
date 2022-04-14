@@ -42,9 +42,12 @@ export class LoginPage implements OnInit {
 
     try {
       this.auth.login(this.user)
-      .catch(err => {
-        this.alert.showAlertError(err);
-      })
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
+        })
+        .catch(err => {
+          this.alert.showAlertError(err);
+        })
     } catch (err) {
       console.log("erro " + err)
     }

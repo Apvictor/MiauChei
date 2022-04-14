@@ -76,7 +76,8 @@ export class PetsDetailsPage implements OnInit {
   petFound(id) {
     try {
       this.petsService.petFound(id)
-        .then(() => {
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
           this.nav.back();
         })
         .catch(err => {

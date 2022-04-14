@@ -1,3 +1,5 @@
+import { AlertService } from './../../../components/alert.service';
+import { Pet } from './../../../models/pet';
 import { LoadingService } from './../../../components/loading.service';
 import { PetsService } from './../../../services/pets.service';
 import { Component, OnInit } from '@angular/core';
@@ -14,6 +16,7 @@ export class PetsLostPage implements OnInit {
   constructor(
     private pets: PetsService,
     private loading: LoadingService,
+    private alert: AlertService,
   ) { }
 
   ngOnInit() {
@@ -21,12 +24,16 @@ export class PetsLostPage implements OnInit {
   }
 
   async petsLost() {
-    this.loading.presentLoading();
     try {
-      this.pets.petsLost().then((pets) => {
-        this.loading.dismissLoading();
-        this.animais = pets;
-      })
+      this.pets.petsLost()
+        .then((res) => {
+          this.loading.presentLoading();
+          this.animais = res;
+        }).catch((err) => {
+          this.alert.showAlertError(err);
+        }).finally(() => {
+          this.loading.dismissLoading();
+        })
     } catch (err) {
       console.log("erro " + err)
     }

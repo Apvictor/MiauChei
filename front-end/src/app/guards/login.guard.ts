@@ -5,7 +5,6 @@ import { filter, map, take } from 'rxjs/operators'
 import { NavController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
 
-
 @Injectable({
   providedIn: 'root'
 })

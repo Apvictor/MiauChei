@@ -49,4 +49,22 @@ export class AuthService {
     })
   }
 
+  logout(data) {
+    return new Promise((resolve, reject) => {
+      this.api.post('/logout', data).subscribe((res: any) => {
+        Storage.remove({ key: ACCESS_TOKEN_KEY })
+        Storage.remove({ key: REFRESH_TOKEN_KEY })
+        Storage.remove({ key: USER_ID })
+        Storage.remove({ key: USER_NAME })
+        this.currentAccessToken = null;
+        this.isAuthenticated.next(false)
+        localStorage.clear();
+        window.location.reload();
+        resolve(res)
+      }, err => {
+        reject(err)
+      })
+    })
+  }
+
 }

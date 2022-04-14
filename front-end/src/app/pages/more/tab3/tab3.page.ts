@@ -1,3 +1,4 @@
+import { AlertService } from './../../../components/alert.service';
 import { UserService } from './../../../services/user.service';
 import { LoadingService } from './../../../components/loading.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
@@ -6,7 +7,7 @@ import { Photo } from './../../auth/cadastro-foto/cadastro-foto.page';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { AlertController, LoadingController, ToastController } from '@ionic/angular';
+import { AlertController, LoadingController, NavController, ToastController } from '@ionic/angular';
 import { AuthService } from './../../../services/auth.service';
 import { Component } from '@angular/core';
 
@@ -26,7 +27,10 @@ export class Tab3Page {
   constructor(
     private loading: LoadingService,
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private alert: AlertService,
+    private auth: AuthService,
+    private nav: NavController
   ) { }
 
   ngOnInit() {
@@ -41,22 +45,22 @@ export class Tab3Page {
   get f() { return this.profile_form.controls }
 
   async profile() {
-    this.loading.presentLoading();
     try {
-      this.userService.profile().then((user) => {
-        this.loading.dismissLoading();
-        this.user.name = user['name'];
-        this.user.email = user['email'];
-        this.user.phone = user['phone'];
-        this.user.photo = user['photo'];
-      })
+      this.loading.presentLoading();
+      this.userService.profile()
+        .then((user) => {
+          this.user.name = user['name'];
+          this.user.email = user['email'];
+          this.user.phone = user['phone'];
+          this.user.photo = user['photo'];
+          this.loading.dismissLoading();
+        })
     } catch (err) {
       console.log("erro " + err)
     }
   }
 
   async postProfile() {
-    this.loading.presentLoading();
     if (this.profile_form.value['name'] != '') {
       this.user.setName(this.profile_form.value['name'])
     } else {
@@ -77,12 +81,20 @@ export class Tab3Page {
 
     if (this.foto == true) {
       this.user.setPhoto(this.foto_form);
-    }    
+    } else {
+      this.user.photo = this.user.getPhoto();
+    }
 
     try {
-      this.userService.postProfile(this.user).then(() => {
-        this.loading.dismissLoading();
-      })
+      this.loading.presentLoading();
+      this.userService.postProfile(this.user)
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
+        }).catch(err => {
+          this.alert.showAlertError(err);
+        }).finally(() => {
+          this.loading.dismissLoading();
+        })
     } catch (err) {
       console.log("erro " + err)
     }
@@ -90,7 +102,6 @@ export class Tab3Page {
 
   async takePicture() {
     this.photos = []
-
     try {
       const profilePicture = await Camera.getPhoto({
         quality: 90,
@@ -109,6 +120,23 @@ export class Tab3Page {
       this.foto = true
     } catch (error) {
       console.error(error);
+    }
+  }
+
+  logout() {
+    try {
+      this.loading.presentLoading();
+      this.auth.logout(this.user)
+        .then((res) => {
+          this.alert.showAlertSuccess(res['success']);
+          this.nav.navigateForward('/login');
+        }).catch((err) => {
+          this.alert.showAlertError(err);
+        }).finally(() => {
+          this.loading.dismissLoading();
+        });
+    } catch (err) {
+      console.log("erro " + err);
     }
   }
 

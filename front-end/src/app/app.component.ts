@@ -19,7 +19,7 @@ export class AppComponent {
     if (this.token) {
       this.nav.navigateForward("");
     } else {
-      this.nav.navigateForward("login");
+      this.nav.navigateForward("splash");
     }
   }
 

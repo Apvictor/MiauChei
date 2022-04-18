@@ -81,7 +81,7 @@ export class CadastroPetPage implements OnInit {
   async takePicture() {
     this.photos = []
     try {
-      const profilePicture = await Camera.getPhoto({
+      await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
         promptLabelHeader: 'Câmera',

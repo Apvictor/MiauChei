@@ -12,12 +12,9 @@ export class LoadingService {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
       message: 'Carregando...',
-      duration: 2000
+      duration: 1500
     });
     await loading.present();
   }
 
-  async dismissLoading() {
-    await this.loadingController.dismiss();
-  }
 }

@@ -38,10 +38,9 @@ export class PetsDetailsPage implements OnInit {
   }
 
   petsDetails(id) {
-    this.loading.presentLoading();
     try {
       this.petsService.petsDetails(id).then((pets) => {
-        this.loading.dismissLoading();
+        this.loading.presentLoading();
         this.pet.id = pets['id'];
         this.pet.name = pets['name'];
         this.pet.photo = pets['photo'];

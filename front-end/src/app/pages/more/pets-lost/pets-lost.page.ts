@@ -1,49 +1,44 @@
 import { AlertService } from './../../../components/alert.service';
-import { Pet } from './../../../models/pet';
 import { LoadingService } from './../../../components/loading.service';
 import { PetsService } from './../../../services/pets.service';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-pets-lost',
   templateUrl: './pets-lost.page.html',
   styleUrls: ['./pets-lost.page.scss'],
 })
-export class PetsLostPage implements OnInit {
+export class PetsLostPage {
 
-  animais
+  animais: any[];
+  filterTerm: string;
 
   constructor(
-    private pets: PetsService,
+    private petsService: PetsService,
     private loading: LoadingService,
     private alert: AlertService,
   ) { }
 
-  ngOnInit() {
+  ionViewDidEnter() {
+    this.animais = [];
     this.petsLost();
   }
 
-  async petsLost() {
+  petsLost() {
     try {
-      this.pets.petsLost()
-        .then((res) => {
-          this.loading.presentLoading();
-          this.animais = res;
+      this.petsService.petsLost()
+        .then((res: any) => {
+          // this.loading.presentLoading();
+          for (let i = 0; i < res.length; i++) {
+            let pet = res[i];
+            this.animais.push(pet);
+          }
         }).catch((err) => {
           this.alert.showAlertError(err);
-        }).finally(() => {
-          this.loading.dismissLoading();
         })
     } catch (err) {
       console.log("erro " + err)
     }
-  }
-
-  doRefresh(event) {
-    setTimeout(() => {
-      this.petsLost();
-      event.target.complete();
-    }, 1000);
   }
 
 }

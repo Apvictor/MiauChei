@@ -11,13 +11,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>
-
   <div class="container">
+    <div class="pesquisar">
+      <ion-searchbar placeholder="Buscar..." animated="true" [(ngModel)]="filterTerm"></ion-searchbar>
+    </div>
     <div class="pets">
-      <div class="pet" *ngFor="let item of animais" routerLink="/pets-details/{{item.status_id}}/{{item.id}}">
+      <div class="pet" *ngFor="let item of animais | filter:filterTerm"
+        routerLink="/pets-details/{{item.status_id}}/{{item.id}}">
         <div class="pet-img">
           <img src="{{item.photo}}">
         </div>

@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
 
-  private url = environment.api_url
+  private url = environment.api_prod
   urlCep = environment.cep_url
   token = window.localStorage.getItem('CapacitorStorage.access-token');
 

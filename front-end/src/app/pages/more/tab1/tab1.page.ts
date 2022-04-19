@@ -37,13 +37,13 @@ export class Tab1Page {
       this.pets.recents()
         .then((res: any) => {
           // this.loading.presentLoading();
-          
+
           for (let i = 0; i < res.length; i++) {
             let pet = res[i];
             this.animais.push(pet);
           }
         }).catch((err) => {
-          window.location.reload();
+          // window.location.reload();
           this.alert.showAlertError(err);
         })
     } catch (err) {

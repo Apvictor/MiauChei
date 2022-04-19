@@ -1,4 +1,3 @@
-import { Pet } from './../../../models/pet';
 import { NavController } from '@ionic/angular';
 import { AlertService } from './../../../components/alert.service';
 import { Sighted } from './../../../models/sighted';

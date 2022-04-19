@@ -29,9 +29,10 @@ ion-header {
 }
 
 .container {
-  margin: 30px 10px;
+  margin: 0px 10px;
 
   .text-info {
+    margin: 20px 0 50px 0;
     background: #F0F0F0;
     border-radius: 10px;
 
@@ -95,29 +96,30 @@ ion-header {
     }
   }
 
-  .termos {
-    position: absolute;
-    bottom: 80px;
-    font-weight: bold;
-    font-size: 12px;
-
-    a {
-      color: #0292C9;
-      text-decoration-line: underline;
-    }
-  }
-
   .btn {
-    margin: 10px 2%;
-    position: absolute;
-    bottom: 0;
-    width: 90%;
+    margin: 30px 0;
 
     ion-button {
       height: 50px;
       font-size: 20px;
       --background: #0292C9;
       text-transform: none;
+    }
+  }
+}
+
+ion-footer {
+  position: unset;
+
+  .termos {
+    text-align: justify;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 3%;
+
+    a {
+      color: #0292C9;
+      text-decoration-line: underline;
     }
   }
 }

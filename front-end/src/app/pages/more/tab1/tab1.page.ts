@@ -12,7 +12,7 @@ const USER_NAME = 'user-name';
 })
 export class Tab1Page {
   nameUser
-  animais
+  animais: any[];
 
   constructor(
     private pets: PetsService,
@@ -20,12 +20,10 @@ export class Tab1Page {
     private alert: AlertService,
   ) { }
 
-  ngOnInit() {
-    this.getNameUser();
-    this.recentsPets();
-  }
+  ionViewDidEnter() {
+    this.animais = [];
 
-  ionViewCanEnter() {
+    this.getNameUser();
     this.recentsPets();
   }
 
@@ -35,26 +33,21 @@ export class Tab1Page {
   }
 
   recentsPets() {
-    this.loading.presentLoading();
     try {
       this.pets.recents()
-        .then((res) => {
-          this.animais = res;
+        .then((res: any) => {
+          // this.loading.presentLoading();
+
+          for (let i = 0; i < res.length; i++) {
+            let pet = res[i];
+            this.animais.push(pet);
+          }
         }).catch((err) => {
+          // window.location.reload();
           this.alert.showAlertError(err);
-        }).finally(() => {
-          this.loading.dismissLoading();
         })
     } catch (err) {
       console.log("erro " + err)
     }
-  }
-
-  doRefresh(event) {
-    setTimeout(() => {
-      this.recentsPets();
-      this.getNameUser();
-      event.target.complete();
-    }, 1000);
   }
 }

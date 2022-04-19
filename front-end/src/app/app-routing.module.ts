@@ -45,7 +45,11 @@ const routes: Routes = [
   {
     path: 'cadastro-sighted/:id',
     loadChildren: () => import('./pages/more/cadastro-sighted/cadastro-sighted.module').then( m => m.CadastroSightedPageModule)
+  },  {
+    path: 'splash',
+    loadChildren: () => import('./pages/auth/splash/splash.module').then( m => m.SplashPageModule)
   },
+
 ];
 @NgModule({
   imports: [

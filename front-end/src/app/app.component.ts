@@ -1,31 +1,34 @@
+import { AuthService } from './services/auth.service';
 import { NavController } from '@ionic/angular';
 import { Component } from '@angular/core';
+import { SplashScreen } from '@capacitor/splash-screen';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  token
 
   constructor(
-    public nav: NavController,
+    private auth: AuthService,
+    private nav: NavController,
   ) {
-    this.initializeApp()
+    this.initializeApp();
   }
 
-  initializeApp() {
-    this.getToken();
-    if (this.token) {
-      this.nav.navigateForward("");
-    } else {
-      this.nav.navigateForward("login");
-    }
+  async initializeApp() {
+    this.autoLogin();
+    await SplashScreen.hide();
   }
 
-  getToken() {
-    const token = window.localStorage.getItem('CapacitorStorage.access-token');
-    this.token = token
-    return this.token;
+  async autoLogin() {
+    this.auth.isAuthenticated.subscribe(state => {
+      if (state) {
+        this.nav.navigateRoot('');
+      } else {
+        this.nav.navigateRoot('/login');
+      }
+    });
   }
 }

@@ -30,4 +30,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'facebook' => [
+        'client_id' => env('FACEBOOK_CLIENT_ID', '240890448214038'),
+        'client_secret' => env('FACEBOOK_CLIENT_SECRET', 'f3b6e97315ba85d16156d7eb134a1937'),
+        'redirect' => env('FACEBOOK_REDIRECT_URI', 'https://miauchei.herokuapp.com/api/login/facebook/callback'),
+    ],
 ];

@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\App\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use GuzzleHttp\Exception\ClientException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Laravel\Socialite\Facades\Socialite;
+
 class LoginController extends Controller
 {
     /**
@@ -59,5 +63,69 @@ class LoginController extends Controller
         ];
 
         return $response;
+    }
+
+
+    /**
+     * Redirecione o usuário para a página de autenticação do provedor.
+     *
+     * @param $provider
+     * @return JsonResponse
+     */
+    public function redirectToProvider($provider = 'facebook')
+    {
+        $validated = $this->validateProvider($provider);
+        if (!is_null($validated)) {
+            return $validated;
+        }
+
+        return Socialite::driver($provider)->stateless()->redirect();
+    }
+
+    /**
+     * Obtenha as informações do usuário do Provedor.
+     *
+     * @param $provider
+     * @return JsonResponse
+     */
+    public function handleProviderCallback($provider = 'facebook')
+    {
+        $validated = $this->validateProvider($provider);
+        if (!is_null($validated)) {
+            return $validated;
+        }
+        try {
+            $user = Socialite::driver($provider)->stateless()->user();
+        } catch (ClientException $exception) {
+            return response()->json(['error' => 'Credenciais inválidas fornecidas.'], 422);
+        }
+
+        $userCreated = User::firstOrCreate(
+            ['email' => $user->getEmail()],
+            [
+                'email_verified_at' => now(),
+                'name' => $user->getName(),
+                'photo' => $user->getAvatar(),
+            ]
+        );
+
+        $userCreated->providers()->updateOrCreate(
+            ['provider' => $provider, 'provider_id' => $user->getId(),],
+            ['avatar' => $user->getAvatar()]
+        );
+        $token = $userCreated->createToken('FACEBOOK')->plainTextToken;
+
+        return response()->json($userCreated, 200, ['Access-Token' => $token]);
+    }
+
+    /**
+     * @param $provider
+     * @return JsonResponse
+     */
+    protected function validateProvider($provider = 'facebook')
+    {
+        if (!in_array($provider, ['facebook', 'github', 'google'])) {
+            return response()->json(['error' => 'Por favor, faça o login usando facebook, github ou google'], 422);
+        }
     }
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\App\UserController;
 use Illuminate\Support\Facades\Route;
 
 /* Auth */
-
 Route::post('login', [LoginController::class, 'login']);
 Route::post('register', [RegisterController::class, 'register']);
 

@@ -1,14 +1,14 @@
 import { AuthService } from './services/auth.service';
 import { NavController } from '@ionic/angular';
 import { Component } from '@angular/core';
-import { SplashScreen } from '@capacitor/splash-screen';
-
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
+  token
 
   constructor(
     private auth: AuthService,
@@ -17,17 +17,17 @@ export class AppComponent {
     this.initializeApp();
   }
 
-  async initializeApp() {
+  initializeApp() {
+    this.token = window.localStorage.getItem('access-token');
     this.autoLogin();
-    await SplashScreen.hide();
   }
 
-  async autoLogin() {
+  autoLogin() {
     this.auth.isAuthenticated.subscribe(state => {
-      if (state) {
-        this.nav.navigateRoot('');
+      if (this.token != null) {
+        state != false ? this.nav.navigateRoot('') : this.nav.navigateRoot('/login');
       } else {
-        this.nav.navigateRoot('/login');
+        this.nav.navigateRoot('/login')
       }
     });
   }

@@ -96,7 +96,7 @@ class UserController extends Controller
     // TODO Swagger
     public function logout(Request $request)
     {
-        $request->user()->currentAccessToken()->delete();
+        $request->user()->tokens()->delete();
 
         return response()->json(['success' => 'Usuário deslogado com sucesso!']);
     }

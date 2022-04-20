@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 import { BehaviorSubject } from 'rxjs';
-import { Storage } from '@capacitor/storage';
-
-const ACCESS_TOKEN_KEY = 'access-token';
-const USER_ID = 'user-id';
-const USER_NAME = 'user-name';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +15,10 @@ export class AuthService {
   login(data) {
     return new Promise((resolve, reject) => {
       this.api.post('/login', data).subscribe((res: any) => {
-        Storage.set({ key: ACCESS_TOKEN_KEY, value: res.authorization })
-        Storage.set({ key: USER_NAME, value: res.user.name })
-        Storage.set({ key: USER_ID, value: res.user.id })
+        window.localStorage.setItem('user-id', res.user.id);
+        window.localStorage.setItem('user-name', res.user.name);
+        window.localStorage.setItem('access-token', res.authorization);
+        window.localStorage.setItem('refresh-token', res.authorization);
         this.currentAccessToken = res.authorization;
         this.isAuthenticated.next(true)
         resolve(res)
@@ -45,18 +41,12 @@ export class AuthService {
   logout(data) {
     return new Promise((resolve, reject) => {
       this.api.post('/logout', data).subscribe((res: any) => {
-        Storage.remove({ key: ACCESS_TOKEN_KEY })
-        Storage.remove({ key: USER_ID })
-        Storage.remove({ key: USER_NAME })
-        this.currentAccessToken = null;
         this.isAuthenticated.next(false)
-        localStorage.clear();
-        window.location.reload();
+        window.localStorage.clear();
         resolve(res)
       }, err => {
         reject(err)
       })
     })
   }
-
 }

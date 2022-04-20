@@ -22,7 +22,9 @@ defineCustomElements(window);
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, NgxMaskModule.forRoot({ dropSpecialCharacters: false }),
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

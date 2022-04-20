@@ -8,30 +8,34 @@ import { environment } from 'src/environments/environment';
 export class ApiService {
 
   private url = environment.api_prod
-  urlCep = environment.cep_url
-  token = window.localStorage.getItem('CapacitorStorage.access-token');
 
-  constructor(private http: HttpClient) { }
+  token
+  headers
+
+  constructor(private http: HttpClient) {
+    this.token = window.localStorage.getItem('access-token');
+    this.headers = new HttpHeaders()
+      .set('Accept', 'application/json')
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer ' + this.token)
+  }
 
   post(serviceName, data) {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)
     const url = this.url + serviceName
-    const options = { headers: headers, withCredentials: false }
+    const options = { headers: this.headers, withCredentials: false }
 
     return this.http.post(url, data, options)
   }
 
   put(serviceName, data) {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)
     const url = this.url + serviceName
-    const options = { headers: headers, withCredentials: false }
+    const options = { headers: this.headers, withCredentials: false }
 
     return this.http.put(url, data, options)
   }
 
   get(serviceName) {
-    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', 'Bearer ' + this.token)
-    const options = { headers: headers, withCredentials: false }
+    const options = { headers: this.headers, withCredentials: false }
     const url = this.url + serviceName
 
     return this.http.get(url, options)

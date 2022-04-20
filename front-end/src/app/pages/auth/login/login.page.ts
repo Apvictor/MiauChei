@@ -4,7 +4,7 @@ import { AuthService } from './../../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-
+import { Device } from '@capacitor/device';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -23,6 +23,10 @@ export class LoginPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    Device.getInfo().then((res) => {
+      this.user.setDevice_name(res.model);
+    });
+
     this.login_form = this.formBuilder.group({
       email: new FormControl('', Validators.compose([Validators.required, Validators.email])),
       password: new FormControl('', Validators.compose([Validators.required, Validators.minLength(8)]))
@@ -34,7 +38,6 @@ export class LoginPage implements OnInit {
   doLogin() {
     this.user.setEmail(this.login_form.value['email'])
     this.user.setPassword(this.login_form.value['password'])
-    this.user.setDevice_name('Android')
 
     try {
       this.auth.login(this.user)

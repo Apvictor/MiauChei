@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\App\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-
 class LoginController extends Controller
 {
     /**
@@ -33,25 +32,30 @@ class LoginController extends Controller
      */
     public function login(Request $request): array
     {
-        $request->validate([
+        $credentials = $request->only('email', 'password');
+
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required',
             'device_name' => 'required',
         ]);
 
-        $user = User::where('email', $request->get('email'))->first();
-
-        if (!$user || !Hash::check($request->get('password'), $user->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->messages()], 401);
         }
+
+
+        if (!auth()->attempt($credentials)) {
+            return response()->json(['message' => "As credenciais de login são inválidas."], 401);
+        }
+
+        $token = auth()->user()->createToken($request->get('device_name'));
 
         $response = [
             'status' => true,
-            'authorization' => $user->createToken($request->get('device_name'))->plainTextToken,
+            'authorization' => $token->plainTextToken,
             'success' => 'Login efetuado com sucesso!',
-            'user' => $user
+            'user' => Auth::user()
         ];
 
         return $response;

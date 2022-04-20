@@ -34,7 +34,11 @@
       </div>
 
       <div class="btn">
-        <ion-button expand="block" (click)="doLogin()" [disabled]="!login_form.valid">
+        <ion-button color="secondary" expand="block" (click)="doLogin()" [disabled]="!login_form.valid">
+          Entrar
+        </ion-button>
+        <ion-button expand="block" (click)="facebook()" [disabled]="!login_form.valid">
+          <ion-icon name="logo-facebook"></ion-icon>
           Entrar
         </ion-button>
       </div>

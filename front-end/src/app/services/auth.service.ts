@@ -49,4 +49,22 @@ export class AuthService {
       })
     })
   }
+
+  loginFacebook() {
+    return new Promise((resolve, reject) => {
+      this.api.get('/login/facebook').subscribe((res: any) => {
+        // window.localStorage.setItem('user-id', res.user.id);
+        // window.localStorage.setItem('user-name', res.user.name);
+        // window.localStorage.setItem('access-token', res.authorization);
+        // window.localStorage.setItem('refresh-token', res.authorization);
+        // this.currentAccessToken = res.authorization;
+        // this.isAuthenticated.next(true)
+        resolve(res)
+        console.log(res);
+
+      }, err => {
+        reject(err)
+      })
+    })
+  }
 }

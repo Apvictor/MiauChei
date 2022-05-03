@@ -68,5 +68,35 @@
             <!-- /.info-box -->
         </div>
 
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">
+                    <i class="fas fa-cat"></i>
+                </span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Espécies</span>
+                    <span class="info-box-number">{{ $counts['species'] }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua">
+                    <i class="fas fa-dog"></i>
+                </span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Raças</span>
+                    <span class="info-box-number">{{ $counts['breeds'] }}</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
     </div>
 @endsection

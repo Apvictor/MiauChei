@@ -63,38 +63,41 @@ class RegisterController extends Controller
      *      @OA\Response(response=400,description="Bad Request"),
      * )
      */
-    public function register(Request $request): JsonResponse
+    public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $dados = $request->all();
+
+        $validator = Validator::make($dados, [
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required',
             'phone' => 'required',
-            'photo' => 'required',
+            'super' => 'required',
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['message' => $validator->messages()->all()[0]]);
-        } else {
-            $dados = $request->all();
+            return response()->json(['message' => $validator->errors()]);
+        }
 
-            $dados['uuid'] = Str::uuid();
-            $dados['password'] = Hash::make($dados['password']);
+        $dados['super'] = 1;
+        $dados['uuid'] = Str::uuid();
+        $dados['password'] = Hash::make($dados['password']);
 
+        if (isset($dados['photo'])) {
             $data = explode(',', $dados['photo']);
             $folder = 'users/';
             $name = $folder . $dados['uuid'] . '.jpg';
             Storage::disk('s3')->put($name, base64_decode($data[0]));
             $url = Storage::disk('s3')->url($name);
             $dados['photo'] = $url;
+        } else {
+            $dados['photo'] = 'https://www.freeiconspng.com/thumbs/profile-icon-png/am-a-19-year-old-multimedia-artist-student-from-manila--21.png';
         }
-
-        $user = User::create($dados);
 
         return response()->json([
             'status' => true,
             'message' => 'Cadastro efetuado com sucesso!',
-            'user' => $user
+            'user' => User::create($dados)
         ]);
     }
 }

@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ApiService {
 
-  private url = environment.api_prod
+  private url = environment.api_hml
 
   token
   headers
@@ -39,21 +39,6 @@ export class ApiService {
     const url = this.url + serviceName
 
     return this.http.get(url, options)
-  }
-
-
-  getFacebook(serviceName) {
-    const headers = new HttpHeaders()
-      .set('Access-Control-Allow-Origin', '*')
-      .set('Accept', 'application/json')
-      .set('Content-Type', 'application/json')
-      .set('Authorization', 'Bearer ' + this.token)
-
-    const options = { headers: this.headers, withCredentials: false }
-    const url = this.url + serviceName
-
-    return this.http.get(url, options)
-
   }
 
 }

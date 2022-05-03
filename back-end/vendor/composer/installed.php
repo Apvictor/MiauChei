@@ -1,11 +1,11 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => 'dev-main',
-        'version' => 'dev-main',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'fb53af3176d8d64691aadbf1d21027377bd643bd',
+        'reference' => '65c84f7ba09854daa49fd80f5c4ebde88ee44fe8',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -440,12 +440,12 @@
             'dev_requirement' => false,
         ),
         'laravel/laravel' => array(
-            'pretty_version' => 'dev-main',
-            'version' => 'dev-main',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'fb53af3176d8d64691aadbf1d21027377bd643bd',
+            'reference' => '65c84f7ba09854daa49fd80f5c4ebde88ee44fe8',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
@@ -473,15 +473,6 @@
             'install_path' => __DIR__ . '/../laravel/serializable-closure',
             'aliases' => array(),
             'reference' => '9e4b005daa20b0c161f3845040046dc9ddc1d74e',
-            'dev_requirement' => false,
-        ),
-        'laravel/socialite' => array(
-            'pretty_version' => 'v5.5.2',
-            'version' => '5.5.2.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/socialite',
-            'aliases' => array(),
-            'reference' => '68afb03259b82d898c68196cbcacd48596a9dd72',
             'dev_requirement' => false,
         ),
         'laravel/tinker' => array(
@@ -536,15 +527,6 @@
             'install_path' => __DIR__ . '/../league/mime-type-detection',
             'aliases' => array(),
             'reference' => '3e4a35d756eedc67096f30240a68a3149120dae7',
-            'dev_requirement' => false,
-        ),
-        'league/oauth1-client' => array(
-            'pretty_version' => 'v1.10.1',
-            'version' => '1.10.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../league/oauth1-client',
-            'aliases' => array(),
-            'reference' => 'd6365b901b5c287dd41f143033315e2f777e1167',
             'dev_requirement' => false,
         ),
         'lucascudo/laravel-pt-br-localization' => array(

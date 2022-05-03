@@ -40,27 +40,29 @@ export class CadastroFotoPage implements OnInit {
     })
 
     this.route.queryParams.subscribe(params => {
-      this.user.setName(params['name']);
-      this.user.setEmail(params['email']);
-      this.user.setPassword(params['password']);
+      this.user.name = params['name'];
+      this.user.email = params['email'];
+      this.user.password = params['password'];
     });
   }
 
   get f() { return this.cadastro_form.controls }
 
   async doCadastro() {
-    this.user.setPhoto(this.foto_form);
-    this.user.setPhone(this.cadastro_form.value['phone']);
-    this.showModal();
+    this.user.phone = this.cadastro_form.value['phone'];
+
+    if (this.foto == true) {
+      this.user.photo = this.foto_form
+    }
 
     try {
       this.auth.cadastro(this.user)
         .then((res) => {
           this.alert.showAlertSuccess(res['success']);
-          this.nav.navigateForward('login');
+          this.showModal();
         }).catch((err) => {
           this.alert.showAlertError(err);
-        })
+        });
     } catch (err) {
       console.log("erro " + err)
     }
@@ -84,7 +86,7 @@ export class CadastroFotoPage implements OnInit {
     this.photos = []
 
     try {
-      const profilePicture = await Camera.getPhoto({
+      await Camera.getPhoto({
         quality: 90,
         allowEditing: false,
         promptLabelHeader: 'Câmera',

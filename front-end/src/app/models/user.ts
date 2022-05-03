@@ -1,15 +1,12 @@
 export class User {
 
+    public id: number
     public name: string
     public email: string
-    private password: string
-    private device_name: string
+    public password: string
+    public device_name: string
     public phone: string
     public photo: string
-    public id: number
-
-    constructor() {
-    }
 
     getId(): any {
         return this.id;
@@ -17,7 +14,6 @@ export class User {
     setId(id: any) {
         this.id = id;
     }
-
     getName(): any {
         return this.name;
     }

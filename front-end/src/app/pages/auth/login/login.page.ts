@@ -52,19 +52,4 @@ export class LoginPage implements OnInit {
       console.log("erro " + err)
     }
   }
-
-  facebook() {
-    try {
-      this.auth.loginFacebook()
-        .then((res) => {
-          this.alert.showAlertSuccess(res['success']);
-          this.nav.navigateForward("");
-        })
-        .catch(err => {
-          this.alert.showAlertError(err);
-        })
-    } catch (err) {
-      console.log("erro " + err)
-    }
-  }
 }

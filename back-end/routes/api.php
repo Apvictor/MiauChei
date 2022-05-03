@@ -9,13 +9,8 @@ use App\Http\Controllers\App\UserController;
 use Illuminate\Support\Facades\Route;
 
 /* Auth */
-
 Route::post('login', [LoginController::class, 'login']);
 Route::post('register', [RegisterController::class, 'register']);
-
-/* Facebook */
-Route::get('login/{provider}', [LoginController::class, 'redirectToProvider']);
-Route::get('login/{provider}/callback', [LoginController::class, 'handleProviderCallback']);
 
 Route::middleware('auth:sanctum')->group(function () {
     /* User */

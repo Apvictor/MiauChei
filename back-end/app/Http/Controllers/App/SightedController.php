@@ -6,11 +6,12 @@ use App\Helpers\DifferentDates;
 use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
-use DateTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Ladumor\OneSignal\OneSignal;
 
 class SightedController extends Controller
 {
@@ -132,13 +133,10 @@ class SightedController extends Controller
 
         $dados = $request->all();
 
-        $date = new DateTime($dados['data_sighted']);
-        $data_format = $date->format('Y-m-d');
-
         Sighted::create([
             'user_id' => Auth::user()->id,
             'pet_id' => $dados['pet_id'],
-            'data_sighted' => $data_format,
+            'data_sighted' => date('Y-d-m', strtotime($dados['data_sighted'])),
             'last_seen' => $dados['last_seen'],
             'user_pet' => $dados['user_pet']
         ]);
@@ -147,6 +145,16 @@ class SightedController extends Controller
         $pet->status_id = 3;
         $pet->save();
 
-        return response()->json(['success' => 'Cadastro efetuado com sucesso!']);
+        $devices = DB::table('user_devices')->where('user_id', $pet->user_id)->get();
+
+        $fields['include_player_ids'] = [];
+        for ($i = 0; $i < count($devices); $i++) {
+            array_push($fields['include_player_ids'], $devices[$i]->os_player_id);
+        }
+
+        $message = 'Entre no aplicativo e veja quem avistou o seu Pet!';
+        $notification = OneSignal::sendPush($fields, $message);
+
+        return response()->json(['success' => 'Cadastro efetuado com sucesso!', 'notification' => $notification]);
     }
 }

@@ -6,7 +6,6 @@ use App\Helpers\DifferentDates;
 use App\Http\Controllers\Controller;
 use App\Models\Pets;
 use App\Models\Sighted;
-use DateTime;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -220,9 +219,6 @@ class PetsController extends Controller
             $dados['photo'] = $url;
         }
 
-        $date = new DateTime($dados['date_disappearance']);
-        $data_format = $date->format('Y-m-d');
-
         $pet = new Pets();
         $pet->name = $dados['name'];
         $pet->species = $dados['species'];
@@ -232,7 +228,7 @@ class PetsController extends Controller
         $pet->predominant_color = $dados['predominant_color'];
         $pet->secondary_color = $dados['secondary_color'] ?? null;
         $pet->physical_details = $dados['physical_details'] ?? null;
-        $pet->date_disappearance = $data_format;
+        $pet->date_disappearance = date('Y-d-m', strtotime($dados['data_sighted']));
         $pet->photo = $dados['photo'];
         $pet->uuid = $dados['uuid'];
         $pet->user_id = Auth::user()->id;

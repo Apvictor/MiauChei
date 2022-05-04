@@ -6,7 +6,10 @@ use App\Http\Controllers\App\FoundController;
 use App\Http\Controllers\App\PetsController;
 use App\Http\Controllers\App\SightedController;
 use App\Http\Controllers\App\UserController;
+use App\Http\Controllers\App\UserDeviceController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 
 /* Auth */
 Route::post('login', [LoginController::class, 'login']);
@@ -32,4 +35,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
     /* Encontrado */
     Route::put('pet-found/{id}', [FoundController::class, 'petFound']);
+
+    /* OneSignal */
+    Route::prefix('notification')->group(function () {
+        Route::post('/send', [FoundController::class, 'sendNotification']);
+        Route::post('/register/device', [UserDeviceController::class, 'registerDevice']);
+        Route::post('/update/status/{playerId}', [UserDeviceController::class, 'updateNotificationStatus']);
+    });
 });

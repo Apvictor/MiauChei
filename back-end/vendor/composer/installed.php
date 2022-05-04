@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '65c84f7ba09854daa49fd80f5c4ebde88ee44fe8',
+        'reference' => '612a34d2f28d0724f68df6eaf33ccb74980f85a8',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -430,6 +430,15 @@
                 0 => '*',
             ),
         ),
+        'ladumor/one-signal' => array(
+            'pretty_version' => '0.4.2',
+            'version' => '0.4.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../ladumor/one-signal',
+            'aliases' => array(),
+            'reference' => '2f46a29fbf3b3ac55a844bedec98494d9443da69',
+            'dev_requirement' => false,
+        ),
         'laravel/framework' => array(
             'pretty_version' => 'v8.83.8',
             'version' => '8.83.8.0',
@@ -445,7 +454,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '65c84f7ba09854daa49fd80f5c4ebde88ee44fe8',
+            'reference' => '612a34d2f28d0724f68df6eaf33ccb74980f85a8',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(

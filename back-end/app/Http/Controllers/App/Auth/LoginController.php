@@ -42,7 +42,7 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 401);
+            return response()->json(['error' => $validator->messages()], 401);
         }
 
         if (!auth()->attempt($credentials)) {

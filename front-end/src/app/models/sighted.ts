@@ -4,6 +4,7 @@ export class Sighted {
     public data_sighted: string
     public pet_id: number
     public user_pet: boolean
+    public player_id: string
 
     getLastSeen(): any {
         return this.last_seen;

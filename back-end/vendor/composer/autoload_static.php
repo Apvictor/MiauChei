@@ -136,6 +136,7 @@ class ComposerStaticInit9db287fbab89ebd372278c8abcb4808d
             'Laravel\\SerializableClosure\\' => 28,
             'Laravel\\Sanctum\\' => 16,
             'Laravel\\Sail\\' => 13,
+            'Ladumor\\OneSignal\\' => 18,
             'L5Swagger\\' => 10,
         ),
         'J' => 
@@ -443,6 +444,10 @@ class ComposerStaticInit9db287fbab89ebd372278c8abcb4808d
         'Laravel\\Sail\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/sail/src',
+        ),
+        'Ladumor\\OneSignal\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/ladumor/one-signal/src',
         ),
         'L5Swagger\\' => 
         array (
@@ -3772,6 +3777,11 @@ class ComposerStaticInit9db287fbab89ebd372278c8abcb4808d
         'L5Swagger\\L5SwaggerFacade' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/L5SwaggerFacade.php',
         'L5Swagger\\L5SwaggerServiceProvider' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/L5SwaggerServiceProvider.php',
         'L5Swagger\\SecurityDefinitions' => __DIR__ . '/..' . '/darkaonline/l5-swagger/src/SecurityDefinitions.php',
+        'Ladumor\\OneSignal\\OneSignal' => __DIR__ . '/..' . '/ladumor/one-signal/src/OneSignal.php',
+        'Ladumor\\OneSignal\\OneSignalClient' => __DIR__ . '/..' . '/ladumor/one-signal/src/OneSignalClient.php',
+        'Ladumor\\OneSignal\\OneSignalManager' => __DIR__ . '/..' . '/ladumor/one-signal/src/OneSignalManager.php',
+        'Ladumor\\OneSignal\\OneSignalServiceProvider' => __DIR__ . '/..' . '/ladumor/one-signal/src/OneSignalServiceProvider.php',
+        'Ladumor\\OneSignal\\commands\\PublishUserDevice' => __DIR__ . '/..' . '/ladumor/one-signal/src/commands/PublishUserDevice.php',
         'Laravel\\Sail\\Console\\InstallCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/InstallCommand.php',
         'Laravel\\Sail\\Console\\PublishCommand' => __DIR__ . '/..' . '/laravel/sail/src/Console/PublishCommand.php',
         'Laravel\\Sail\\SailServiceProvider' => __DIR__ . '/..' . '/laravel/sail/src/SailServiceProvider.php',

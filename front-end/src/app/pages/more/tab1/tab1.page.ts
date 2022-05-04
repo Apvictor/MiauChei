@@ -1,5 +1,5 @@
-import { AlertService } from './../../../components/alert.service';
-import { LoadingService } from './../../../components/loading.service';
+import { Device } from '@capacitor/device';
+import { UserService } from './../../../services/user.service';
 import { PetsService } from './../../../services/pets.service';
 import { Component } from '@angular/core';
 @Component({
@@ -13,14 +13,18 @@ export class Tab1Page {
 
   constructor(
     private pets: PetsService,
-    private loading: LoadingService,
-    private alert: AlertService,
-  ) { }
+    private userService: UserService,
+  ) {
+    Device.getInfo().then((res) => {
+      this.userService.notification.device_type = res.model;
+    });
+  }
 
   ionViewDidEnter() {
     this.animais = [];
     this.nameUser = window.localStorage.getItem('user-name');
     this.recentsPets();
+    this.registerDevice();
   }
 
   recentsPets() {
@@ -36,6 +40,16 @@ export class Tab1Page {
         })
     } catch (err) {
       console.log("erro " + err)
+    }
+  }
+
+
+  registerDevice() {
+    try {
+      this.userService.postDevice(this.userService.notification)
+        .then((res) => { console.log(res) });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

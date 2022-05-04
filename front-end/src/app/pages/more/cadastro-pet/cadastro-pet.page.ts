@@ -39,7 +39,6 @@ export class CadastroPetPage implements OnInit {
       predominant_color: new FormControl('', Validators.compose([Validators.required])),
       secondary_color: new FormControl('', Validators.compose([Validators.nullValidator])),
       physical_details: new FormControl('', Validators.compose([Validators.nullValidator])),
-      date_disappearance: new FormControl('', Validators.compose([Validators.required])),
       last_seen: new FormControl('', Validators.compose([Validators.required])),
     })
   }
@@ -57,7 +56,6 @@ export class CadastroPetPage implements OnInit {
     this.pet.setPredominant_color(this.cadastro_form.value['predominant_color']);
     this.pet.setSecondary_color(this.cadastro_form.value['secondary_color']);
     this.pet.setPhysical_details(this.cadastro_form.value['physical_details']);
-    this.pet.setDate_disappearance(this.cadastro_form.value['date_disappearance']);
     this.pet.setPhoto(this.foto_form);
     this.sighted.setLastSeen(this.cadastro_form.value['last_seen']);
 
@@ -76,6 +74,14 @@ export class CadastroPetPage implements OnInit {
     } catch (err) {
       console.log("erro " + err)
     }
+  }
+
+  changeDate(event) {
+    var myDate = new Date(event.detail.value);
+    let dataFormat = `${myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate()}`;
+
+    this.pet.setDate_disappearance(dataFormat);
+    console.log(this.pet);
   }
 
   async takePicture() {

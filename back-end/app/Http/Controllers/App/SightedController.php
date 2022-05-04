@@ -136,7 +136,7 @@ class SightedController extends Controller
         Sighted::create([
             'user_id' => Auth::user()->id,
             'pet_id' => $dados['pet_id'],
-            'data_sighted' => date('Y-d-m', strtotime($dados['data_sighted'])),
+            'data_sighted' => $dados['data_sighted'],
             'last_seen' => $dados['last_seen'],
             'user_pet' => $dados['user_pet']
         ]);

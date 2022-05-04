@@ -31,7 +31,6 @@ export class CadastroSightedPage implements OnInit {
     })
 
     this.cadastro_form = this.formBuilder.group({
-      data_sighted: new FormControl('', Validators.compose([Validators.required])),
       last_seen: new FormControl('', Validators.compose([Validators.required])),
       user_pet: new FormControl('', Validators.compose([Validators.required])),
     })
@@ -40,7 +39,6 @@ export class CadastroSightedPage implements OnInit {
   get f() { return this.cadastro_form.controls }
 
   petsSightedStore() {
-    this.sighted.setDataSighted(this.cadastro_form.value['data_sighted']);
     this.sighted.setLastSeen(this.cadastro_form.value['last_seen']);
     this.sighted.setUserPet(this.cadastro_form.value['user_pet'] == 'true' ? true : false);
 
@@ -56,6 +54,14 @@ export class CadastroSightedPage implements OnInit {
     } catch (err) {
       console.log("erro " + err)
     }
+  }
+
+  changeDate(event) {
+    var myDate = new Date(event.detail.value);
+    let dataFormat = `${myDate.getFullYear() + '-' + (myDate.getMonth() + 1) + '-' + myDate.getDate()}`;
+
+    console.log(dataFormat);
+    this.sighted.setDataSighted(dataFormat);
   }
 
 }

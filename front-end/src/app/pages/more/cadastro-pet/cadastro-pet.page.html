@@ -99,12 +99,9 @@
 
       <div class="campos">
         <p>Data de Desaparecimento</p>
-        <ion-item class="inputs">
-          <input formControlName="date_disappearance" type="text" mask="d0/M0/0000" />
+        <ion-item>
+          <ion-datetime (ionChange)="changeDate($event)" displayFormat="DD-MMM-YYYY"></ion-datetime>
         </ion-item>
-        <div class="msgError" *ngIf="f.date_disappearance.invalid && f.date_disappearance.touched">
-          <p>O campo data de desaparecimento é obrigatório!</p>
-        </div>
       </div>
 
       <div class="campos">
@@ -118,7 +115,8 @@
       </div>
 
       <div class="btn">
-        <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsStore()">
+        <!-- <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsStore()"> -->
+        <ion-button expand="block" (click)="petsStore()">
           Enviar
         </ion-button>
       </div>

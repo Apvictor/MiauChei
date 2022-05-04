@@ -16,12 +16,9 @@
 
       <div class="campos">
         <p>Data do avistamento</p>
-        <ion-item class="inputs">
-          <input formControlName="data_sighted" type="text" mask="d0/M0/0000" />
+        <ion-item>
+          <ion-datetime (ionChange)="changeDate($event)" displayFormat="DD-MMM-YYYY"></ion-datetime>
         </ion-item>
-        <div class="msgError" *ngIf="f.data_sighted.invalid && f.data_sighted.touched">
-          <p>O campo data de avistamento é obrigatório!</p>
-        </div>
       </div>
 
       <div class="campos">
@@ -45,7 +42,8 @@
       </div>
 
       <div class="btn">
-        <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsSightedStore()">
+        <!-- <ion-button expand="block" [disabled]="!cadastro_form.valid" (click)="petsSightedStore()"> -->
+        <ion-button expand="block" (click)="petsSightedStore()">
           Enviar
         </ion-button>
       </div>

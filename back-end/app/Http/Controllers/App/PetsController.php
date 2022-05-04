@@ -228,7 +228,7 @@ class PetsController extends Controller
         $pet->predominant_color = $dados['predominant_color'];
         $pet->secondary_color = $dados['secondary_color'] ?? null;
         $pet->physical_details = $dados['physical_details'] ?? null;
-        $pet->date_disappearance = date('Y-d-m', strtotime($dados['data_sighted']));
+        $pet->date_disappearance = $dados['date_disappearance'];
         $pet->photo = $dados['photo'];
         $pet->uuid = $dados['uuid'];
         $pet->user_id = Auth::user()->id;
@@ -238,7 +238,7 @@ class PetsController extends Controller
 
         $sighted = new Sighted();
         $sighted->last_seen = $dados['last_seen'];
-        $sighted->data_sighted = $data_format;
+        $sighted->data_sighted = $dados['date_disappearance'];
         $sighted->user_id = Auth::user()->id;
 
         $pet->sighted()->save($sighted);
